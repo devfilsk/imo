@@ -1,6 +1,10 @@
 import React, { createContext, useState, useEffect, useContext } from 'react';
+import { Alert } from 'react-native';
 import AsyncStorage from '@react-native-community/async-storage';
 import { TOKEN, USER } from '~/storage/constants';
+
+
+// import { useNavigation } from '@react-navigation/native';
 
 import api from '~/services/api';
 
@@ -14,7 +18,7 @@ interface AuthContextData {
     user: User | null;
     signIn({}): Promise<void>;
     signOut(): void;
-    signUp({}): Promise<void>
+    signUp({}): Promise<boolean>;
     loading: boolean;
 }
  
@@ -45,7 +49,19 @@ export const AuthProvider: React.FC = ({ children }) => {
     async function signUp(data: object) {
         try{
             const response = await api.post("users", data);
-            console.log("USER", response)
+
+            console.log("RESPONSA", response)
+
+            if(response.status === 201){
+                await AsyncStorage.setItem(USER, JSON.stringify(response.data.user));
+                await AsyncStorage.setItem(TOKEN, response.data.token);
+                Alert.alert("Bem vindo ao Imo!");
+                setUser(response.data.user); 
+                // navigation.navigate("SignIn");
+                // console.log("USER", response)
+            } else{
+                console.log("FALHA NO LOGIN");
+            }
         }catch(err) {
             console.log("ERR", err)
         }
@@ -54,6 +70,7 @@ export const AuthProvider: React.FC = ({ children }) => {
     async function signIn(data: object) {
         // const response = await auth.signIn();
         try{
+            console.log("YOOOO")
             const response = await api.post('sessions', data);
             console.log("AQUI AGORA", response)
             if(response?.data?.token) {
@@ -64,7 +81,7 @@ export const AuthProvider: React.FC = ({ children }) => {
             }
             console.log("RESPONSE", response);
           }catch(error) {
-            console.log(error)
+            console.log(error.response)
           }
 
     }

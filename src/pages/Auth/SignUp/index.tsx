@@ -12,6 +12,10 @@ const SignUp: React.FC = ({ navigation }) => {
   
   function handleSignUpPress(data: object) {
     signUp(data);
+    // console.log("CADASTROU ", response)
+    // if(response) {
+    //   navigation.navigate("SignIn")
+    // }
   }
 
   function handleGoBackToLogin() {

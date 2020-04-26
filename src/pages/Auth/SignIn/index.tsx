@@ -34,7 +34,6 @@ const SignIn: React.FC = ({ navigation }) => {
     console.log("EEOR", errors)
 
     async function handleSignInPress(data: any) {
-        console.log("AQUI");
         signIn(data);
     // try{
     //   const response = await api.post('sessions', data);
