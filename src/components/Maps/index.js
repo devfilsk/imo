@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 import { Alert, Image } from 'react-native';
 
 import { useApp } from '~/contexts/app';
@@ -11,10 +11,15 @@ import { Container, AnnotationContainer, AnnotationText } from './styles';
 
 export default function Maps({ isNewProperty = false, customRegion=null, getCustomerRegion = () => {} }) {
 
-  const { currentPosition, properties } = useApp();
+  const { currentPosition, properties, getPropertie } = useApp();
+
+
+  function handleSelectedPropertie(event) {
+    getPropertie(event);
+  }
 
   function renderProperties() {
-      return properties.map(p => (
+      return properties && properties.map(p => (
         
           <Marker 
             key={p.id}
@@ -22,6 +27,9 @@ export default function Maps({ isNewProperty = false, customRegion=null, getCust
             anchor={{ x: 0, y: 1 }}
             image={markerImage}
             centerOffset={{ x: -18, y: -60 }}
+            onPress={ handleSelectedPropertie }
+            identifier={p.id.toString()}
+            // id={p.id}
           >
                {/* <Marker 
                     coordinate={{ latitude: parseFloat(p.latitude), longitude: parseFloat(p.longitude) }}

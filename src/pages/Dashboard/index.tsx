@@ -1,14 +1,19 @@
 import React, { useState } from 'react';
 import Icon from 'react-native-vector-icons/Fontisto';
 
+import { useApp } from '~/contexts/app';
+
 import Search from '~/components/Maps/Search';
 
 import { Container, NewButtonContainer, ButtonText, FloatButton } from './styles';
 
 import Maps from '~/components/Maps'
 import ListScreen from './components/ListScreen';
+import PrevPropertie from './components/PrevPropertie';
 
 export default function Dashboard ({ navigation }) {
+
+  const { propertie } = useApp();
 
   const [ newPropertyRegion, setNewPropertyRegion ] = useState(null);
   const [ isNewProperty, setIsNewProperty ] = useState<boolean>(false);
@@ -50,8 +55,11 @@ export default function Dashboard ({ navigation }) {
         
         <FloatButton onPress={changeVisualization}>
           {/* <ButtonText>Novo Imóvel</ButtonText> */}
-          <Icon name={`${ isMaps ? "nav-icon-list-a" :"map" }`} size={30} color="#667" />
+          <Icon name={`${ isMaps ? "nav-icon-list-a" : "map" }`} size={30} color="#667" />
         </FloatButton>
+        { 
+          propertie && <PrevPropertie />
+        }
       </>
   )
 }

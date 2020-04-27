@@ -1,4 +1,5 @@
 import React, { createContext, useEffect, useState, useContext } from 'react';
+import { Alert } from 'react-native';
 import Geolocation from 'react-native-geolocation-service';
 
 import api from '~/services/api';
@@ -10,8 +11,19 @@ interface PositionData {
     longitudeDelta: number | null;
 }
 
+interface PropertieData {
+  title: string;
+  images: [];
+  latitude: number;
+  longitude: number;
+  id: number;
+  address: string;
+}
+
 interface AppContextData {
-    properties: {} | null;
+    propertie: PropertieData | null;
+    getPropertie(event: object | null): void;
+    properties: [] | null;
     currentPosition: {} | null;
 }
 
@@ -19,10 +31,11 @@ const AppContext = createContext<AppContextData>({} as AppContextData)
 
 export const AppProvider: React.FC = ({ children }) => {
 
-    const [ properties, setProperties ] = useState(null);
+    const [ propertie, setPropertie ] = useState<PropertieData | null>(null);
+    const [ properties, setProperties ] = useState<[] | null>([]);
     const [ currentPosition, setCurrentPosition ] = useState<PositionData | null>(null);
 
-
+    // Pega a posição atual
     useEffect(() => {
         
         async function handleCurrentPosition() {
@@ -51,28 +64,38 @@ export const AppProvider: React.FC = ({ children }) => {
     
     }, [])
 
-
+    // Pega todos os imóveis no raio da localização atual
     useEffect(() => { // cicle to get properties
-        async function getPropertioes() {
-          console.log("currentPosition: ", currentPosition)
-    
+        async function getPropertioes() {    
           const response = await api.get(`properties?latitude=${currentPosition?.latitude}&longitude=${currentPosition?.longitude}`);
           
           if(response.status === 200) {
             setProperties(response.data);        
           }else{
-            // Alert.alert("Não foi possível carregar as propriedades no mapa")
+            Alert.alert("Não foi possível carregar as propriedades no mapa")
           }
-          console.log("PRoperties: ", response.data)
     
         }
     
         getPropertioes();
     
-      }, [currentPosition]);
+    }, [currentPosition]); // Só é chamado quando o curentPosition é alterado
+
+    function getPropertie(event: any | null) {
+      if(event) {
+        const { id } =  event.nativeEvent;
+        let prop = properties && properties.filter((v: any) => v.id === parseInt(id) );
+        if(prop.length) {
+          setPropertie(prop[0]);
+        }
+        console.log("SELECTED PROPERTIE: ", propertie);
+      }else{
+        setPropertie(null);
+      }
+    }
 
     return (
-        <AppContext.Provider value={{ properties, currentPosition }}>
+        <AppContext.Provider value={{ propertie, getPropertie, properties, currentPosition }}>
             { children }
         </AppContext.Provider>
     )
