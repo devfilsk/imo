@@ -4,6 +4,7 @@ import { Dimensions } from 'react-native';
 export const Container = styled.View`
   flex: 1;
   margin: 20px;
+  justify-content: space-between;
 `;
 
 export const FieldsContainer = styled.View`
@@ -23,7 +24,7 @@ export const Input = styled.TextInput`
   border-radius: 5px;
   background-color: #FFF;
   align-self: stretch;
-  margin-bottom: 10px; 
+  margin-top: 10px; 
   /* margin: 0 20px; */
   font-size: 16px;
   /* padding: 15px 20px;
@@ -35,9 +36,9 @@ export const Input = styled.TextInput`
 `;
 
 export const ButtonNext = styled.TouchableHighlight`
-  position: absolute;
+  /* position: absolute;
   bottom: 0;
-  right: 0;
+  right: 0; */
   width: auto;
   border: 1px;
   padding: 10px 30px;
@@ -134,4 +135,10 @@ export const ImageMarker = styled.Image`
   position: absolute;
   align-self: center;
   top: ${(Dimensions.get('window').height / 2) - 40};
+`;
+export const ErrorLabel = styled.Text`
+    color: #9E1A1A;
+    font-size: 14px;
+    padding-left: 5px;
+    margin-top: 5px;
 `;

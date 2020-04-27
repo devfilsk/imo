@@ -13,7 +13,7 @@ import PrevPropertie from './components/PrevPropertie';
 
 export default function Dashboard ({ navigation }) {
 
-  const { propertie } = useApp();
+  const { propertie, customerPosition, handleSetCustomerPosition } = useApp();
 
   const [ newPropertyRegion, setNewPropertyRegion ] = useState(null);
   const [ isNewProperty, setIsNewProperty ] = useState<boolean>(false);
@@ -21,11 +21,20 @@ export default function Dashboard ({ navigation }) {
 
   function handleLocationSelected( data, { geometry }) {
     const { location: { lat: latitude, lng: longitude } } = geometry;
-    setNewPropertyRegion({
-        latitude,
-        longitude,
-        title: data.structured_formatting.main_text
-    })
+    // setNewPropertyRegion({
+    //     latitude,
+    //     longitude,
+    //     title: data.structured_formatting.main_text
+    // })
+
+    let newPosition = {
+      ...customerPosition,
+          latitude,
+          longitude,
+      };
+
+      console.log("PEGOU", newPosition)
+    handleSetCustomerPosition(newPosition)
   
   }
 

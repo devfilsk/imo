@@ -4,6 +4,7 @@ import { createStackNavigator } from '@react-navigation/stack';
 import MainProperties from '~/pages/Propertie/Main';
 import NewPropertie from '~/pages/Propertie/NewPropertie';
 import PicturePropertie from '~/pages/Propertie/PicturePropertie';
+import DetailsPropertie from '~/pages/Propertie/DetailsPropertie';
 
 const PropertieStack = createStackNavigator();
 
@@ -23,6 +24,7 @@ const PropertiesRoutes: React.FC = () => {
             }}
         >
             <PropertieStack.Screen name="MainProperties" component={MainProperties} />
+            <PropertieStack.Screen name="DetailsPropertie" component={DetailsPropertie} />
             <PropertieStack.Screen name="PicturePropertie" component={PicturePropertie} />
             <PropertieStack.Screen name="NewPropertie" component={NewPropertie}/>
         </PropertieStack.Navigator>

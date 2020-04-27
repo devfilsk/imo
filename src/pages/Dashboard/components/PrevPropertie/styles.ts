@@ -9,19 +9,27 @@ export const Container = styled.View`
   shadow-color: #000;
   shadow-offset: 0 0 ;
   shadow-opacity: 0.2;
-  shadow-radius: 10;
+  shadow-radius: 10px;
   elevation: 3;
   border: 1px solid #DDD;
-  align-items: center;
+  /* align-items: center; */
   padding: 20px;
+`;
+export const CloseContent = styled.View`
+    align-self: flex-end;
 `;
 export const TypeTitle = styled.Text`
     font-size: 20px;
     color: #222;
 `;
+export const TypeDesciptionLabel = styled.Text`
+    font-weight: bold;
+`;
 export const TypeDesciption = styled.Text`
     color: #666;
     font-size: 14px;
+    padding-left: 5px;
+    margin-top: 5px;
 `;
 export const TypeImage = styled.Image`
     height: 80px;
@@ -33,7 +41,7 @@ export const RequestButton = styled.TouchableOpacity`
     align-items: center;
     height: 44px;
     align-self: stretch;
-    margin-top: 10px;
+    margin-top: 20px;
 `;
 export const RequestButtonText = styled.Text`
     color: #FFF;

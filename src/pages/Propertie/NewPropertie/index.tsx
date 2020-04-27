@@ -4,6 +4,8 @@ import { useForm, Controller } from 'react-hook-form';
 // import FormData from 'form-data';
 import Maps from '~/components/Maps';
 
+import { useApp } from '~/contexts/app';
+
 import Search from '~/components/Maps/Search';
 
 
@@ -23,6 +25,7 @@ import {
     Title,
     ImageMarker,
     ModalAddressContainer,
+    ErrorLabel,
 } from './styles';
 
 // import imgteste from '~/assets/marker.png';
@@ -30,20 +33,59 @@ import {
 export default function NewPropertie({ navigation }) {
 
     const { register, handleSubmit, setValue, errors, control } = useForm();
+    const { customerPosition, handleSetCustomerPosition } = useApp();
 
     const [ address, setAddress ] = useState("");
-    const [ addressRef, setAddressRef ] = useState(null);
-    const [ cameraModalOpen, setCameraModalOpen ] = useState(false);
     const [ addressModalOpen, setAdressModalOpen ] = useState(false);
-    const [ mapsModalOpened, setMapsModalOpened ] = useState(false);
-    const [ region, setRegion ] = useState(null);
-
-    function getCustomerRegion(event: any) {
-        console.log("EVENT ---> ", event)
-        setRegion(event);
-    }
 
     function handleCloseAddressModal() {
+        setAdressModalOpen(!addressModalOpen);
+    }
+
+    console.log("ERROS", errors)
+
+    async function handleSubmitPropertie(data: object) {
+        try{
+            if(customerPosition) {
+                const request = {
+                    ...data,
+                    address,
+                    latitude: Number(customerPosition?.latitude.toFixed(6)),
+                    longitude: Number(customerPosition?.longitude.toFixed(6))
+                };
+                console.log("FORM ==>", request)
+                const response = await api.post("properties", request)
+            }
+
+
+        }catch(error) {
+            console.log("ERROR  -->", error)
+        }
+    }
+
+    function nextPage(data: object) {
+        handleSubmitPropertie(data);
+        console.log("Passou!", data)
+        handleSetCustomerPosition(null);
+        navigation.navigate("PicturePropertie");
+        // setMapsModalOpened(!mapsModalOpened);
+    }
+
+    function handleLocationSelected( data, { geometry }) {
+        const { location: { lat: latitude, lng: longitude } } = geometry;
+        setAddress(data.description);
+        console.log("DADOOOS --> ", data)
+        console.log("geometry --> ", geometry)
+        handleSetCustomerPosition({
+            ...customerPosition,
+            latitude,
+            longitude,
+            // title: data.structured_formatting.main_text
+        })
+    }
+
+    function openAddressModal() {
+        handleSetCustomerPosition(null);
         setAdressModalOpen(!addressModalOpen);
     }
     
@@ -59,8 +101,7 @@ export default function NewPropertie({ navigation }) {
             >
 
                 <Maps 
-                    customRegion={region}
-                    getCustomerRegion={getCustomerRegion}
+                    customRegion={customerPosition}
                 />
                 <ImageMarker source={markerImage}/>
                 <ModalAddressContainer>
@@ -75,129 +116,49 @@ export default function NewPropertie({ navigation }) {
         );
       }
 
-    
-    async function handleSubmitPropertie(data: object) {
-        try{
-            const request = {
-                ...data,
-                address,
-                latitude: Number(region.latitude.toFixed(6)),
-                longitude: Number(region.longitude.toFixed(6))
-            };
-            console.log("FORM ==>", request)
-            const response = await api.post("properties", request)
-
-
-        }catch(error) {
-            console.log("ERROR  -->", error)
-        }
-    }
-
-    function nextPage() {
-        navigation.navigate("PicturePropertie");
-        // setMapsModalOpened(!mapsModalOpened);
-    }
-
-    function handleLocationSelected( data, { geometry }) {
-        const { location: { lat: latitude, lng: longitude } } = geometry;
-        setAddress(data.description);
-        console.log("DADOOOS --> ", data)
-        console.log("geometry --> ", geometry)
-        setRegion({
-            latitude,
-            longitude, 
-            latitudeDelta: 0.0143,
-            longitudeDelta: 0.0134
-            // title: data.structured_formatting.main_text
-        })
-    }
-
-    function toggleMapsModal() {
-        console.log("-->", "aqui")
-        setMapsModalOpened(false);
-    }
-
     return (
         <>
             <Container>
                 <FieldsContainer>
                     <Title>Nos dê algumas informações do seu imóvel</Title>
-                    <Controller
-                        as={Input}
-                        control={control}
+                    <Input
                         placeholder="Nome do Imóvel"
-                        name="title"
-                        onChange={args => args[0].nativeEvent.text}
-                        rules={{ required: true }}
                         autoCapitalize="none"
-                        defaultValue=""
                         autoCorrect={false}
-                    />
-
+                        ref={register({ name: "title" }, { required: true })}
+                        onChangeText={(text: string) => setValue('title', text, true)}
+                        />
+                    { errors.title && (<ErrorLabel>O nome do imóvel é obrigatório!</ErrorLabel>)}
                     <Input
                         placeholder="Endereço"
                         autoCapitalize="none"
                         value={address}
                         autoCorrect={false}
                         // ref={register({ name: "address" }, {required: true })}
-                        // onChangeText={text => setValue('address', text, true)}
-                        onFocus={() => setAdressModalOpen(!addressModalOpen)}
+                        // onChangeText={(text: string) => setValue('address', text)}
+                        onFocus={openAddressModal}
                     />
-                    <Controller
-                        as={Input}
-                        control={control}
-                        placeholder="Valor"
-                        name="price"
-                        onChange={args => args[0].nativeEvent.text}
-                        rules={{ required: true }}
-                        autoCapitalize="none"
-                        defaultValue=""
-                        autoCorrect={false}
-                    />
-                    {/* <Input
-                        placeholder="Nome do Imóvel"
-                        autoCapitalize="none"
-                        autoCorrect={false}
-                        ref={register({ name: "title"}, { required: true })}
-                        onChangeText={text => setValue('title', text, true)}
-                        />
-                    <Input
-                        placeholder="Endereço"
-                        autoCapitalize="none"
-                        value={address}
-                        autoCorrect={false}
-                        ref={register({ name: "address" }, {required: true })}
-                        onChangeText={text => setValue('address', text, true)}
-                        onFocus={() => setAdressModalOpen(!addressModalOpen)}
-                    /> */}
-
-                    {/* <Input
+                    
+                     <Input
                         placeholder="Valor"
                         autoCapitalize="none"
                         autoCorrect={false}
                         ref={register({ name: "price" }, { required: true })}
-                        onChangeText={text => setValue('price', text, true)}
-                    /> */}
+                        onChangeText={(text: string) => setValue('price', text, true)}
+                    />
+                    { errors.price && (<ErrorLabel>Preencha o valor!</ErrorLabel>)}
                    
                 </FieldsContainer>
                 
-              
-                    <ButtonNext onPress={nextPage}>
-                        <ButtonNextText>Avançar</ButtonNextText>
-                    </ButtonNext>
+                <ButtonNext onPress={handleSubmit(nextPage)}>
+                    <ButtonNextText>Avançar</ButtonNextText>
+                </ButtonNext>
+                   
             </Container>
            
             {
                  renderAddressModal()
             }
-
-            {/* <MapsModal 
-                isOpen={mapsModalOpened} 
-                toggleModal={toggleMapsModal} 
-                region={region} 
-                getCustomerRegion={getCustomerRegion}
-                finish={handleSubmit(handleSubmitPropertie)}
-            /> */}
 
         </>
     );

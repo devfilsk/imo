@@ -11,11 +11,22 @@ import { Container, AnnotationContainer, AnnotationText } from './styles';
 
 export default function Maps({ isNewProperty = false, customRegion=null, getCustomerRegion = () => {} }) {
 
-  const { currentPosition, properties, getPropertie } = useApp();
+  const { currentPosition, properties, handleSetPropertie, customerPosition, handleSetCustomerPosition } = useApp();
 
 
   function handleSelectedPropertie(event) {
-    getPropertie(event);
+    // selected propertie or null
+    handleSetPropertie(event);
+
+    // Set customer position to map centered to the 
+    let { latitude, longitude } = event.nativeEvent.coordinate;
+    let data = {
+      ...customerPosition,
+      latitude,
+      longitude
+    }
+    
+    handleSetCustomerPosition(data);
   }
 
   function renderProperties() {
@@ -52,13 +63,13 @@ export default function Maps({ isNewProperty = false, customRegion=null, getCust
             style={{ flex: 1, position: "relative" }}
             loadingEnabled
             showsUserLocation
-            region={ customRegion ? customRegion : currentPosition }
-            onRegionChangeComplete={getCustomerRegion}
+            region={ customerPosition ? customerPosition : currentPosition }
+            onRegionChangeComplete={handleSetCustomerPosition}
         >
           {
-            customRegion && (
+            customerPosition && (
               <Marker 
-                coordinate={{ latitude: customRegion.latitude, longitude: customRegion.longitude }}
+                coordinate={{ latitude: customerPosition.latitude, longitude: customerPosition.longitude }}
                 // draggable
                 // onDragEnd={ (e) => {
                 //   console.log("Event", e.nativeEvent)
@@ -73,7 +84,7 @@ export default function Maps({ isNewProperty = false, customRegion=null, getCust
         
             { renderProperties() }
         </MapView>
-        {/* { customRegion && <ImageMarker source={markerImage}/> } */}
+        {/* { customerPosition && <ImageMarker source={markerImage}/> } */}
 
     </>
   );
