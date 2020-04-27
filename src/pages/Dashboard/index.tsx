@@ -2,14 +2,18 @@ import React, { useState } from 'react';
 
 import Search from '~/components/Maps/Search';
 
-import { Container, NewButtonContainer, ButtonText } from './styles';
+import Icon from 'react-native-vector-icons/Fontisto';
+
+import { Container, NewButtonContainer, ButtonText, FloatButton } from './styles';
 
 import Maps from '~/components/Maps'
+import ListScreen from './components/ListScreen';
 
 export default function Dashboard ({ navigation }) {
 
   const [ newPropertyRegion, setNewPropertyRegion ] = useState(null);
-  const [ isNewProperty, setIsNewProperty ] = useState(false);
+  const [ isNewProperty, setIsNewProperty ] = useState<boolean>(false);
+  const [ isMaps, setIsMaps ] = useState<boolean>(true);
 
   function handleLocationSelected( data, { geometry }) {
     const { location: { lat: latitude, lng: longitude } } = geometry;
@@ -18,29 +22,38 @@ export default function Dashboard ({ navigation }) {
         longitude,
         title: data.structured_formatting.main_text
     })
-    // setRegion({
-    //     ...region,
-    //     latitude,
-    //     longitude,
-    // })
+  
   }
 
   function getNewPropertyLocale() {
     navigation.navigate("NewPropertie")
   }
 
+  function changeVisualization() {
+    setIsMaps(!isMaps);
+  }
+
   return (
-      <Container>
-       <Maps isNewProperty={isNewProperty} customRegion={newPropertyRegion}/>
+      <>
+        { isMaps ? 
+          (
+            <Container>
+              <Maps isNewProperty={isNewProperty} customRegion={newPropertyRegion}/>
 
-       <Search 
-          onLocationSelected={handleLocationSelected}
-        />
+              <Search 
+                onLocationSelected={handleLocationSelected}
+              />
 
-       <NewButtonContainer onPress={getNewPropertyLocale}>
-        <ButtonText>Novo Imóvel</ButtonText>
-      </NewButtonContainer>
-      </Container>
+            </Container>
+          ): (
+            <ListScreen />
+          )}
+        
+        <FloatButton onPress={changeVisualization}>
+          {/* <ButtonText>Novo Imóvel</ButtonText> */}
+          <Icon name={`${ isMaps ? "nav-icon-list-a" :"map" }`} size={30} color="#667" />
+        </FloatButton>
+      </>
   )
 }
 // latitude: -16.678040,

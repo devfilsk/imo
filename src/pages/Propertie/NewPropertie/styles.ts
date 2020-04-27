@@ -129,9 +129,9 @@ export const ModalAddressContainer = styled.View`
 `;
 
 export const ImageMarker = styled.Image`
-  width: 50px;
-  height: 50px;
+  width: 40px;
+  height: 40px;
   position: absolute;
   align-self: center;
-  top: ${(Dimensions.get('window').height / 2) - 60};
+  top: ${(Dimensions.get('window').height / 2) - 40};
 `;
