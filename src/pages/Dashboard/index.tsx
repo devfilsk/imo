@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
+import Icon from 'react-native-vector-icons/Fontisto';
 
 import Search from '~/components/Maps/Search';
-
-import Icon from 'react-native-vector-icons/Fontisto';
 
 import { Container, NewButtonContainer, ButtonText, FloatButton } from './styles';
 
