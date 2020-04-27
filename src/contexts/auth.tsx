@@ -57,10 +57,8 @@ export const AuthProvider: React.FC = ({ children }) => {
                 await AsyncStorage.setItem(TOKEN, response.data.token);
                 Alert.alert("Bem vindo ao Imo!");
                 setUser(response.data.user); 
-                // navigation.navigate("SignIn");
-                // console.log("USER", response)
             } else{
-                console.log("FALHA NO LOGIN");
+                Alert.alert("FALHA NO LOGIN");
             }
         }catch(err) {
             console.log("ERR", err)

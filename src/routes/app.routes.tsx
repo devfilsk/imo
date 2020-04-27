@@ -1,7 +1,9 @@
 import React from 'react';
-import Dashboard from '~/pages/Dashboard';
-import Profile from '~/pages/Profile';
 import Icon from 'react-native-vector-icons/AntDesign';
+
+import Dashboard from '~/pages/Dashboard';
+import PropertiesRoutes from './properties.routes';
+import Profile from '~/pages/Profile';
 
 import { createMaterialBottomTabNavigator } from '@react-navigation/material-bottom-tabs';
 
@@ -19,6 +21,14 @@ const AppRoutes: React.FC = () => (
                 tabBarLabel: 'Buscar',
                 tabBarIcon: ({ color }) => (
                 <Icon name="search1" color={color} size={26} />
+                ),
+            }}
+         />
+         <AppBottomNav.Screen name="PropertiesRoutes" component={PropertiesRoutes}
+            options={{
+                tabBarLabel: 'Imóveis',
+                tabBarIcon: ({ color }) => (
+                <Icon name="home" color={color} size={26} />
                 ),
             }}
          />
