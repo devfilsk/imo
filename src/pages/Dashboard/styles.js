@@ -20,9 +20,9 @@ export const NewButtonContainer = styled.TouchableHighlight`
 `;
 
 export const FloatButton = styled.TouchableOpacity`
-  width: 80px;
-  height: 80px;
-  border-radius: 80px;
+  width: 70px;
+  height: 70px;
+  border-radius: 70px;
   border: 1px solid #999;
   position: absolute;
   bottom: 20px;

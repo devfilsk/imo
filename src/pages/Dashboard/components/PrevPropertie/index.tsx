@@ -4,9 +4,9 @@ import { useNavigation } from '@react-navigation/native';
 
 import { useApp } from '~/contexts/app';
 
-import CloseModal from '~/components/Modal/CloseModal';
+import Icon from 'react-native-vector-icons/AntDesign';
 
-import { Container, CloseContent, TypeTitle, TypeDesciption, TypeDesciptionLabel, TypeImage, RequestButton, RequestButtonText } from './styles';
+import { Container, TypeTitle, TypeDesciption, TypeDesciptionLabel, CloseIcon, RequestButton, RequestButtonText } from './styles';
 
 export default function PrevPropertie() {
 
@@ -21,9 +21,9 @@ export default function PrevPropertie() {
 
   return (
     <Container>
-        <CloseContent>
-            <CloseModal closeModal={closeModal} />
-        </CloseContent>
+        <CloseIcon onPress={closeModal}>
+            <Icon name="close" size={30} color={ "#444" } />
+        </CloseIcon>
         <TypeTitle>Imóvel: {propertie?.title}</TypeTitle>
         <TypeDesciption>
             <TypeDesciptionLabel>Descrição: </TypeDesciptionLabel> 

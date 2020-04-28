@@ -59,12 +59,12 @@ export default function Dashboard ({ navigation }) {
 
             </Container>
           ): (
-            <ListScreen />
+            <ListScreen handleSearch={handleLocationSelected}/>
           )}
         
         <FloatButton onPress={changeVisualization}>
           {/* <ButtonText>Novo Imóvel</ButtonText> */}
-          <Icon name={`${ isMaps ? "nav-icon-list-a" : "map" }`} size={30} color="#667" />
+          <Icon name={`${ isMaps ? "nav-icon-list-a" : "map" }`} size={26} color="#667" />
         </FloatButton>
         { 
           propertie && <PrevPropertie />

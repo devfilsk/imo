@@ -1,5 +1,13 @@
 import styled from 'styled-components/native';
 
+export const CloseIcon = styled.TouchableOpacity`
+    /* background: transparent;
+    z-index: 10; */
+    /* padding: 20px; */
+    /* font-size: 25px; */
+    align-self: flex-end;
+`;
+
 export const Container = styled.View`
   background: #FFF;
   height: 300px;
@@ -15,11 +23,8 @@ export const Container = styled.View`
   /* align-items: center; */
   padding: 20px;
 `;
-export const CloseContent = styled.View`
-    align-self: flex-end;
-`;
 export const TypeTitle = styled.Text`
-    font-size: 20px;
+    font-size: 25px;
     color: #222;
 `;
 export const TypeDesciptionLabel = styled.Text`
