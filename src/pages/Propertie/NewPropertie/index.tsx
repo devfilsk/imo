@@ -63,10 +63,10 @@ export default function NewPropertie({ navigation }) {
         }
     }
 
-    function nextPage(data: object) {
-        handleSubmitPropertie(data);
-        console.log("Passou!", data)
-        handleSetCustomerPosition(null);
+    function nextPage(/*data: object*/) {
+        // handleSubmitPropertie(data);
+        // console.log("Passou!", data)
+        // handleSetCustomerPosition(null);
         navigation.navigate("PicturePropertie");
         // setMapsModalOpened(!mapsModalOpened);
     }
@@ -150,7 +150,8 @@ export default function NewPropertie({ navigation }) {
                    
                 </FieldsContainer>
                 
-                <ButtonNext onPress={handleSubmit(nextPage)}>
+                {/* <ButtonNext onPress={handleSubmit(nextPage)}> */}
+                <ButtonNext onPress={nextPage}>
                     <ButtonNextText>Avançar</ButtonNextText>
                 </ButtonNext>
                    

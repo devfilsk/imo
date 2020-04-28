@@ -22,10 +22,20 @@ export const ModalImagesList = styled.ScrollView`
   /* padding-top: 20px; */
 `;
 
-export const ModalImageItem = styled.Image`
+export const List = styled.FlatList.attrs({
+  contentContainerStyle: { paddingHorizontal: 20 },
+  showsVerticalScrollIndicator: false,
+})`
+ margin-top: 20px;
+`;
+
+export const ImageContent = styled.TouchableHighlight`
   height: 100px;
   width: 100px;
   margin-right: 10px;
+`;
+export const ModalImageItem = styled.Image`
+  flex: 1;
 `;
 
 export const ModalButtons = styled.View`
