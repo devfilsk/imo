@@ -135,8 +135,9 @@ android {
         versionCode 1
         versionName "1.0"
         // missingDimensionStrategy 'react-native-camera', 'general'
-        missingDimensionStrategy 'react-native-camera', 'mlkit'
+        // missingDimensionStrategy 'react-native-camera', 'mlkit'
         multiDexEnabled true
+        vectorDrawables.useSupportLibrary = true
     }
     splits {
         abi {
@@ -217,7 +218,7 @@ dependencies {
         implementation jscFlavor
     }
 
-    implementation project(':react-native-camera')
+    // implementation project(':react-native-camera')
 }
 
 // Run this once to be able to run the application with BUCK
