@@ -1,34 +1,29 @@
 import axios from 'axios';
 import AsyncStorage from '@react-native-community/async-storage';
 
-import { TOKEN } from '~/storage/constants';
+import {TOKEN} from '~/storage/constants';
 
 const api = axios.create({
-    baseURL: 'http://127.0.0.1:3333/',
-    // headers: {
-    //     "Content-Type": "multipart/form-data",
-    // }
+  baseURL: 'http://127.0.0.1:3333/',
+  // headers: {
+  //     "Content-Type": "multipart/form-data",
+  // }
 });
 
 // api.defaults.headers.post['Content-Type'] = 'multipart/form-data';
 
-api.interceptors.request.use(async config => {
-    const token = await AsyncStorage.getItem(TOKEN);
+api.interceptors.request.use(async (config) => {
+  const token = await AsyncStorage.getItem(TOKEN);
 
-    if (token) {
-        config.headers.Accept = 'application/json';
-        config.headers.Authorization = "Bearer "+token;
-        config.headers.contentType = 'multipart/form-data';
-    }
-    // config.headers['Content-Type'] = 'multipart/form-data';
-    // config.headers.contentType = 'application/x-www-form-urlencoded';
+  if (token) {
+    config.headers.Accept = 'application/json';
+    config.headers.Authorization = 'Bearer ' + token;
+  }
+  // config.headers['Content-Type'] = 'multipart/form-data';
+  // config.headers.contentType = 'application/x-www-form-urlencoded';
 
-    console.log("CONFIIIIG", config)
-
-    return config;
-
+  return config;
 });
-
 
 // api.interceptors.response.use(async response => {
 //     console.log("Resposta da API", response)
@@ -54,7 +49,7 @@ api.interceptors.request.use(async config => {
 //             if (!isRefreshing) {
 //                 isRefreshing = true;
 
-//                 // Se retornar 401 é porque o usuário nao está autenticado. 
+//                 // Se retornar 401 é porque o usuário nao está autenticado.
 //                 // Então é feito uma requisição para o refresh token com o ultimo token utilizado
 //                 // await api.post('/refresh')
 //                 //     .then((newToken: any) => {

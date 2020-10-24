@@ -13,6 +13,7 @@ import {
 } from 'react-native';
 import Feather from 'react-native-vector-icons/Feather';
 import {RectButton} from 'react-native-gesture-handler';
+import api from '~/services/api';
 
 export default function DataPropertieForm() {
   const [galery, setGalery] = useState(false);
@@ -42,6 +43,28 @@ export default function DataPropertieForm() {
 
   function toggle() {
     setGalery(!galery);
+  }
+
+  async function createPropertie() {
+    const data = new FormData();
+
+    images.forEach((image, index) => {
+      data.append('images', {
+        name: `image_${index}`,
+        type: 'image/jpeg',
+        uri: image,
+      } as any);
+    });
+
+    // const response = await api.post('properties', {title: 'titulo'});
+    const response = await api
+      .post('properties', data)
+      .then((res) => res)
+      .then((res) => console.log('---->', res))
+      .catch((e) => {
+        console.log('=====>', e);
+      });
+    console.log('---------->', response);
   }
 
   return (
@@ -116,7 +139,7 @@ export default function DataPropertieForm() {
         />
       </View>
 
-      <RectButton style={styles.nextButton} onPress={() => {}}>
+      <RectButton style={styles.nextButton} onPress={createPropertie}>
         <Text style={styles.nextButtonText}>Cadastrar</Text>
       </RectButton>
     </ScrollView>
