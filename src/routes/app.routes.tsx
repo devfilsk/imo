@@ -1,5 +1,6 @@
 import React, {useState} from 'react';
 import Icon from 'react-native-vector-icons/AntDesign';
+import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import Dashboard from '~/pages/Dashboard';
 import PropertiesRoutes from './properties.routes';

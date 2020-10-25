@@ -7,9 +7,13 @@ export const Container = styled.View`
 
 export const MenuIten = styled.TouchableOpacity`
   height: 50px;
-  border-bottom-width: 0.5px;
+  flex-direction: row;
+  justify-content: space-between;
+  border-bottom-width: 0.8px;
   border-bottom-color: #d3e2e6;
-  justify-content: center;
+  align-items: center;
 `;
 
-export const MenuItenText = styled.Text``;
+export const MenuItenText = styled.Text`
+  font-size: 16px;
+`;

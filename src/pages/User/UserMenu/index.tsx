@@ -3,6 +3,8 @@ import React from 'react';
 import {useNavigation} from '@react-navigation/native';
 
 import {Title, Text} from '~/components/Elements/Texts';
+import AntDesign from 'react-native-vector-icons/AntDesign';
+import Entypo from 'react-native-vector-icons/Entypo';
 
 import {
   PrimaryButtonContainer,
@@ -35,8 +37,13 @@ const UserMenu: React.FC = () => {
     <Container>
       <Title>Seu Perfil</Title>
 
+      <MenuIten onPress={() => {}}>
+        <MenuItenText>Seus imóveis </MenuItenText>
+        <AntDesign name="home" size={24} />
+      </MenuIten>
       <MenuIten onPress={handleNavigationCreatePropertie}>
-        <MenuItenText>Cadastrar imóvel</MenuItenText>
+        <MenuItenText>Cadastrar imóvel </MenuItenText>
+        <Entypo name="plus" size={24} />
       </MenuIten>
 
       <PrimaryButtonContainer

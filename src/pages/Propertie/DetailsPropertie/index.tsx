@@ -67,6 +67,18 @@ export default function DetailsPropertie() {
     );
   }
 
+  function handleOpenWhastapp() {
+    Linking.canOpenURL('whatsapp://send?text=oi').then((supported) => {
+      if (supported) {
+        return Linking.openURL('whatsapp://send?phone=5562985027057&text=Oi');
+      } else {
+        return Linking.openURL(
+          'https://api.whatsapp.com/send?phone=5562985027057&text=Oi',
+        );
+      }
+    });
+  }
+
   return (
     <ScrollView style={styles.container}>
       <View style={styles.imagesContainer}>
@@ -123,11 +135,11 @@ export default function DetailsPropertie() {
 
         <View style={styles.separator} />
 
-        <Text style={styles.title}>Instruções para visita</Text>
+        {/* <Text style={styles.title}>Instruções para visita</Text>
         <Text style={styles.description}>
           Venha como se sentir a vontade e traga muito amor e paciência para
           dar.
-        </Text>
+        </Text> */}
 
         <View style={styles.scheduleContainer}>
           <View style={[styles.scheduleItem, styles.scheduleItemBlue]}>
@@ -136,15 +148,15 @@ export default function DetailsPropertie() {
               Segunda à Sexta 8h às 18h
             </Text>
           </View>
-          <View style={[styles.scheduleItem, styles.scheduleItemGreen]}>
+          {/* <View style={[styles.scheduleItem, styles.scheduleItemGreen]}>
             <Feather name="info" size={40} color="#39CC83" />
             <Text style={[styles.scheduleText, styles.scheduleTextGreen]}>
               Atendemos fim de semana
             </Text>
-          </View>
+          </View> */}
         </View>
 
-        <RectButton style={styles.contactButton} onPress={() => {}}>
+        <RectButton style={styles.contactButton} onPress={handleOpenWhastapp}>
           <FontAwesome name="whatsapp" size={24} color="#FFF" />
           <Text style={styles.contactButtonText}>Entrar em contato</Text>
         </RectButton>
@@ -225,12 +237,15 @@ const styles = StyleSheet.create({
   },
 
   scheduleContainer: {
-    marginTop: 24,
+    // marginTop: 10,
     flexDirection: 'row',
     justifyContent: 'space-between',
   },
 
   scheduleItem: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
     width: '48%',
     padding: 20,
   },
@@ -253,7 +268,7 @@ const styles = StyleSheet.create({
     fontFamily: 'Nunito_600SemiBold',
     fontSize: 16,
     lineHeight: 24,
-    marginTop: 20,
+    marginLeft: 20,
   },
 
   scheduleTextBlue: {

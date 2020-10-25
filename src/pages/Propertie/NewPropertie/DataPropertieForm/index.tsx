@@ -50,8 +50,8 @@ export default function DataPropertieForm() {
       multiple: true,
     })
       .then((images) => {
-        console.log(images);
         images.map((image) => {
+          console.log('--->', image);
           setImages([...images, image.path]);
         });
         // setImages([...images, image.path]);
