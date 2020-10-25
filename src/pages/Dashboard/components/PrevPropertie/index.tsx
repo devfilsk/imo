@@ -26,7 +26,10 @@ export default function PrevPropertie() {
   }
 
   function navigateToPropertieDetail() {
-    navigation.navigate('PropertiesRoutes', {screen: 'DetailsPropertie'});
+    navigation.navigate('PropertiesRoutes', {
+      screen: 'DetailsPropertie',
+      params: {id: propertie?.id},
+    });
   }
 
   return (

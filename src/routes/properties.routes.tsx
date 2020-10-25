@@ -29,9 +29,14 @@ const PropertiesRoutes: React.FC = () => {
         },
       }}>
       <PropertieStack.Screen name="MainProperties" component={MainProperties} />
+
       <PropertieStack.Screen
         name="DetailsPropertie"
         component={DetailsPropertie}
+        options={{
+          headerShown: true,
+          header: () => <Header title="Dados do Imóvel" />,
+        }}
       />
       {/* <PropertieStack.Screen
         name="PicturePropertie"

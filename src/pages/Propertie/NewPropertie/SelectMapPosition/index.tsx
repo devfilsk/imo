@@ -5,9 +5,12 @@ import {useNavigation} from '@react-navigation/native';
 import {RectButton} from 'react-native-gesture-handler';
 import MapView, {Marker, MapEvent} from 'react-native-maps';
 
+import {useApp} from '~/contexts/app';
+
 import mapMarkerImg from '~/assets/marker.png';
 
 export default function SelectMapPosition() {
+  const {customerPosition, handleSetCustomerPosition} = useApp();
   const [position, setPosition] = useState({latitude: 0, longitude: 0});
 
   const navigation = useNavigation();
@@ -24,8 +27,7 @@ export default function SelectMapPosition() {
     <View style={styles.container}>
       <MapView
         initialRegion={{
-          latitude: -27.2092052,
-          longitude: -49.6401092,
+          ...customerPosition,
           latitudeDelta: 0.008,
           longitudeDelta: 0.008,
         }}
@@ -63,7 +65,7 @@ const styles = StyleSheet.create({
 
   nextButton: {
     backgroundColor: '#6D7BF3',
-    borderRadius: 20,
+    borderRadius: 10,
     justifyContent: 'center',
     alignItems: 'center',
     height: 56,
