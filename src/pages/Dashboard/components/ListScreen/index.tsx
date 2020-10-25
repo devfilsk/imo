@@ -61,13 +61,12 @@ export default function ListScreen({handleSearch}) {
           renderItem={({item: property}) => (
             <Property>
               <PropertyTitle>{property.title}</PropertyTitle>
-              <PropertyDescription>
-                Casa com 3 quartos, bem localizada, 2 banheiros, 1 suíte. Com
-                garagem para 3 carros.
+              <PropertyDescription numberOfLines={3}>
+                {property.description}
               </PropertyDescription>
 
               <PropertyMetters></PropertyMetters>
-              <PropertyValue>R$ 150.000,00</PropertyValue>
+              <PropertyValue>R$ {property.sale_price}</PropertyValue>
 
               <PropertyButton
                 onPress={() => handleNavigateToPropertie(property.id)}>

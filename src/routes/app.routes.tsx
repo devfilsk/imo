@@ -3,7 +3,8 @@ import Icon from 'react-native-vector-icons/AntDesign';
 
 import Dashboard from '~/pages/Dashboard';
 import PropertiesRoutes from './properties.routes';
-import Profile from '~/pages/Profile';
+import UserRoutes from './user.routes';
+import SignUp from '~/pages/Auth/SignUp';
 
 import {createMaterialBottomTabNavigator} from '@react-navigation/material-bottom-tabs';
 import {AppProvider} from '~/contexts/app';
@@ -28,28 +29,28 @@ function AppRoutes() {
             ),
           }}
         />
+
         <AppBottomNav.Screen
           name="PropertiesRoutes"
           component={PropertiesRoutes}
           options={{
-            tabBarLabel: 'Imóveis',
+            tabBarLabel: 'Favoritos',
             tabBarIcon: ({color}) => (
-              <Icon name="home" color={color} size={26} />
+              <Icon name="heart" color={color} size={24} />
             ),
           }}
         />
-        {logged && (
-          <AppBottomNav.Screen
-            name="Profile"
-            component={Profile}
-            options={{
-              tabBarLabel: 'Perfil',
-              tabBarIcon: ({color}) => (
-                <Icon name="user" color={color} size={26} />
-              ),
-            }}
-          />
-        )}
+
+        <AppBottomNav.Screen
+          name="UserRoutes"
+          component={UserRoutes}
+          options={{
+            tabBarLabel: 'Perfil',
+            tabBarIcon: ({color}) => (
+              <Icon name="user" color={color} size={26} />
+            ),
+          }}
+        />
       </AppBottomNav.Navigator>
     </AppProvider>
   );

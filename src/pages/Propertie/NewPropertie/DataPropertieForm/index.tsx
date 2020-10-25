@@ -44,13 +44,21 @@ export default function DataPropertieForm() {
 
   function selectPhotoFromGalery() {
     ImagePicker.openPicker({
-      width: 300,
-      height: 400,
-      cropping: true,
-    }).then((image) => {
-      console.log(image);
-      setImages([...images, image.path]);
-    });
+      // width: 400,
+      // height: 300,
+      // cropping: true,
+      multiple: true,
+    })
+      .then((images) => {
+        console.log(images);
+        images.map((image) => {
+          setImages([...images, image.path]);
+        });
+        // setImages([...images, image.path]);
+      })
+      .catch((e) => {
+        console.log(e);
+      });
   }
 
   function prepareImagesGalery() {

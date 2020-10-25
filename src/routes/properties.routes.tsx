@@ -8,13 +8,14 @@ import PicturePropertie from '~/pages/Propertie/PicturePropertie';
 import DetailsPropertie from '~/pages/Propertie/DetailsPropertie';
 import SelectMapPosition from '~/pages/Propertie/NewPropertie/SelectMapPosition';
 import DataPropertieForm from '~/pages/Propertie/NewPropertie/DataPropertieForm';
+import PropertiesFavoriteds from '~/pages/Propertie/PropertiesFavoriteds';
 
 const PropertieStack = createStackNavigator();
 
 const PropertiesRoutes: React.FC = () => {
   return (
     <PropertieStack.Navigator
-      initialRouteName="MainProperties"
+      initialRouteName="PropertiesFavoriteds"
       screenOptions={{
         headerShown: false,
         cardStyle: {backgroundColor: '#f2f3f5'},
@@ -28,6 +29,14 @@ const PropertiesRoutes: React.FC = () => {
           fontWeight: 'bold',
         },
       }}>
+      <PropertieStack.Screen
+        name="PropertiesFavoriteds"
+        component={PropertiesFavoriteds}
+        options={{
+          headerShown: true,
+          header: () => <Header title="Imóveis curtidos" />,
+        }}
+      />
       <PropertieStack.Screen name="MainProperties" component={MainProperties} />
 
       <PropertieStack.Screen

@@ -9,9 +9,14 @@ import {RectButton} from 'react-native-gesture-handler';
 interface HeaderProps {
   title: string;
   showCancel?: boolean;
+  showBack?: boolean;
 }
 
-const Header: React.FC<HeaderProps> = ({title, showCancel = true}) => {
+const Header: React.FC<HeaderProps> = ({
+  title,
+  showCancel = true,
+  showBack = true,
+}) => {
   const navigation = useNavigation();
   function backToHomePage() {
     navigation.navigate('Dashboard');
@@ -19,9 +24,13 @@ const Header: React.FC<HeaderProps> = ({title, showCancel = true}) => {
 
   return (
     <Container>
-      <RectButton onPress={navigation.goBack}>
-        <Icon name={'arrowleft'} size={24} color="#667" />
-      </RectButton>
+      {showBack ? (
+        <RectButton onPress={navigation.goBack}>
+          <Icon name={'arrowleft'} size={24} color="#667" />
+        </RectButton>
+      ) : (
+        <BlankSpace />
+      )}
 
       <Title>{title}</Title>
 

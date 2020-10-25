@@ -79,6 +79,8 @@ export default function DetailsPropertie() {
                 source={{
                   uri: image.url,
                 }}
+                resizeMode="contain"
+                resizeMethod="resize"
               />
             );
           })}
@@ -163,7 +165,7 @@ const styles = StyleSheet.create({
   image: {
     width: Dimensions.get('window').width,
     height: 240,
-    resizeMode: 'cover',
+    resizeMode: 'contain',
   },
 
   detailsContainer: {

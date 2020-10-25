@@ -2,8 +2,15 @@ import React, {useEffect} from 'react';
 import {useForm} from 'react-hook-form';
 import {TOKEN} from '~/storage/constants';
 
+import {useNavigation} from '@react-navigation/native';
+
 import {signIn} from '~/services/auth';
 import {useAuth} from '~/contexts/auth';
+
+import {
+  PrimaryButtonContainer,
+  PrimaryButtonText,
+} from '~/components/Elements/Buttons';
 
 import {
   Container,
@@ -21,7 +28,8 @@ interface FormData {
   password: string;
 }
 
-const SignIn: React.FC = ({navigation}) => {
+const SignIn: React.FC = () => {
+  const navigation = useNavigation();
   const {signed, user, signIn} = useAuth();
 
   const {register, handleSubmit, setValue, errors} = useForm<FormData>();
@@ -31,10 +39,17 @@ const SignIn: React.FC = ({navigation}) => {
     register('password');
   }, [register]);
 
+  useEffect(() => {
+    if (signed) {
+      navigation.navigate('UserRoutes', {screen: 'UserMenu'});
+    }
+  }, [signed]);
+
   console.log('EEOR', errors);
 
   async function handleSignInPress(data: any) {
     signIn(data);
+
     // try{
     //   const response = await api.post('sessions', data);
     //   if(response?.data?.token) {
@@ -48,7 +63,7 @@ const SignIn: React.FC = ({navigation}) => {
   }
 
   function handleCreateAccountPress() {
-    navigation.navigate('SignUp');
+    navigation.navigate('UserRoutes', {screen: 'SignUp'});
   }
 
   return (
@@ -70,9 +85,9 @@ const SignIn: React.FC = ({navigation}) => {
         onChangeText={(text: string) => setValue('password', text)}
       />
       {errors.password && <ErrorMessage>Campo obrigatório</ErrorMessage>}
-      <Button onPress={handleSubmit(handleSignInPress)}>
-        <ButtonText>Entrar</ButtonText>
-      </Button>
+      <PrimaryButtonContainer onPress={handleSubmit(handleSignInPress)}>
+        <PrimaryButtonText>Entrar</PrimaryButtonText>
+      </PrimaryButtonContainer>
       <SignUpLink onPress={handleCreateAccountPress}>
         <SignUpLinkText>Criar conta grátis</SignUpLinkText>
       </SignUpLink>

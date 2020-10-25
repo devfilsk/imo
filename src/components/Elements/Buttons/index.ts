@@ -1,6 +1,6 @@
 import styled from 'styled-components/native';
 
-export const PrimaryButtonContainer = styled.View`
+export const PrimaryButtonContainer = styled.TouchableOpacity`
   background-color: #6d7bf3;
   border-radius: 10px;
   justify-content: center;

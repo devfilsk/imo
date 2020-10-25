@@ -2,9 +2,8 @@ import styled from 'styled-components';
 
 export const Container = styled.View`
   flex: 1;
-  align-items: center;
   justify-content: center;
-  background-color: #F5F5F5;
+  background-color: #f5f5f5;
   padding: 20px;
 `;
 
@@ -16,7 +15,7 @@ export const Logo = styled.Image`
 export const Input = styled.TextInput`
   padding: 15px 20px;
   border-radius: 5px;
-  background-color: #FFF;
+  background-color: #fff;
   align-self: stretch;
   margin-bottom: 15px;
   font-size: 16px;
@@ -33,13 +32,13 @@ export const ErrorMessage = styled.Text`
 export const Button = styled.TouchableHighlight`
   padding: 20px;
   border-radius: 5px;
-  background-color: #FC6663;
+  background-color: #fc6663;
   align-self: stretch;
   margin-top: 15px;
 `;
 
 export const ButtonText = styled.Text`
-  color: #FFF;
+  color: #fff;
   font-weight: bold;
   font-size: 16px;
   text-align: center;

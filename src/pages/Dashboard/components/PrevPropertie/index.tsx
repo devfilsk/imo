@@ -37,11 +37,10 @@ export default function PrevPropertie() {
       <CloseIcon onPress={closeModal}>
         <Icon name="close" size={30} color={'#444'} />
       </CloseIcon>
-      <TypeTitle>Imóvel: {propertie?.title}</TypeTitle>
-      <TypeDesciption>
+      <TypeTitle>{propertie?.title}</TypeTitle>
+      <TypeDesciption numberOfLines={3}>
         <TypeDesciptionLabel>Descrição: </TypeDesciptionLabel>
-        Casa de esquina com 4 quartos, duas salas, área de lazer, garagem para
-        dois carros
+        {propertie.description}
       </TypeDesciption>
       <TypeDesciption>
         <TypeDesciptionLabel>Endereço: </TypeDesciptionLabel>

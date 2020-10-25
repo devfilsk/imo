@@ -23,11 +23,14 @@ interface PositionData {
 
 interface PropertieData {
   title: string;
-  images: [];
+  description: string;
+  sale_price: number;
   latitude: number;
   longitude: number;
-  id: number;
-  address: string;
+  images: Array<{
+    id: number;
+    url: string;
+  }>;
 }
 
 const AppContext = createContext<AppContextData>({} as AppContextData);
@@ -45,7 +48,7 @@ export const AppProvider: React.FC = ({children}) => {
   // Pega a posição atual
   useEffect(() => {
     async function handleCurrentPosition() {
-      Geolocation.getCurrentPosition(
+      await Geolocation.getCurrentPosition(
         ({coords: {latitude, longitude}}) => {
           // success
 
