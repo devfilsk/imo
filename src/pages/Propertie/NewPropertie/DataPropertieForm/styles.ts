@@ -11,3 +11,9 @@ export const UploadedImages = styled.Image`
   margin-bottom: 32px;
   margin-right: 8px;
 `;
+
+export const SmallAlertText = styled.Text`
+  /* margin-top: 5px; */
+  font-size: 14px;
+  color: #ff669d;
+`;

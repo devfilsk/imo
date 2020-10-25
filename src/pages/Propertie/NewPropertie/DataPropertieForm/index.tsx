@@ -1,7 +1,14 @@
 import React, {useState} from 'react';
 import ImagePicker from 'react-native-image-crop-picker';
 import GallerySwiper from 'react-native-gallery-swiper';
-import {UploadedImagesContainer, UploadedImages} from './styles';
+import {useForm, Controller} from 'react-hook-form';
+import {useNavigation, useRoute} from '@react-navigation/native';
+
+import {
+  UploadedImagesContainer,
+  UploadedImages,
+  SmallAlertText,
+} from './styles';
 import {
   ScrollView,
   View,
@@ -16,6 +23,20 @@ import {RectButton} from 'react-native-gesture-handler';
 import api from '~/services/api';
 
 export default function DataPropertieForm() {
+  const route = useRoute();
+  const navigation = useNavigation();
+
+  const {position} = route.params;
+
+  const {control, handleSubmit, errors, watch} = useForm({
+    defaultValues: {
+      title: '',
+      description: '',
+      address: '',
+      price: '',
+    },
+  });
+
   const [galery, setGalery] = useState(false);
   const [imagesGalery, setImagesGalery] = useState([]);
 
@@ -45,12 +66,11 @@ export default function DataPropertieForm() {
     setGalery(!galery);
   }
 
-  async function createPropertie() {
-    const data = new FormData();
-
+  async function createPropertie(data: Object) {
+    const formData = new FormData();
     images.forEach((image, index) => {
-      data.append('images', {
-        name: `image_${index}`,
+      formData.append('images', {
+        name: `image_${index}.jpg`,
         type: 'image/jpeg',
         uri: image,
       } as any);
@@ -58,9 +78,19 @@ export default function DataPropertieForm() {
 
     // const response = await api.post('properties', {title: 'titulo'});
     const response = await api
-      .post('properties', data)
+      .post('properties', {
+        ...data,
+        latitude: position.latitude,
+        longitude: position.longitude,
+      })
       .then((res) => res)
-      .then((res) => console.log('---->', res))
+      .then(async (res: any) => {
+        if (res.status === 201) {
+          await api.post(`properties/${res.data.id}/images`, formData);
+
+          navigation.navigate('DetailsPropertie', {id: res.data.id});
+        }
+      })
       .catch((e) => {
         console.log('=====>', e);
       });
@@ -72,14 +102,96 @@ export default function DataPropertieForm() {
       <Text style={styles.title}>Dados</Text>
 
       {/* <Text style={styles.label}>Nome</Text> */}
-      <TextInput placeholder="Dê um nome ao imóvel" style={styles.input} />
 
-      {/* <Text style={styles.label}>Sobre</Text> */}
-      <TextInput
-        placeholder="Breve descrição do imóvel"
-        style={[styles.input, {height: 110}]}
-        multiline
+      <Controller
+        control={control}
+        name="title"
+        defaultValue=""
+        rules={{
+          required: 'Digite o título do imóvel!',
+          minLength: {
+            value: 6,
+            message: 'Pelo menos 6 caracteres são obrigatórios!',
+          },
+        }}
+        render={({onChange, onBlur, value}) => (
+          <TextInput
+            style={styles.input}
+            placeholder="Dê um nome ao imóvel"
+            onBlur={onBlur}
+            onChangeText={(value) => onChange(value)}
+            value={value}
+          />
+        )}
       />
+      {errors.title && <SmallAlertText>{errors.title?.message}</SmallAlertText>}
+      {/* <TextInput placeholder="Dê um nome ao imóvel" style={styles.input} /> */}
+
+      <Controller
+        control={control}
+        name="description"
+        defaultValue=""
+        rules={{
+          required: 'Uma descrição é obrigatória!',
+          minLength: {
+            value: 20,
+            message: 'A descrição deve conter pelo menos 20 caracteres',
+          },
+        }}
+        render={({onChange, onBlur, value}) => (
+          <TextInput
+            style={[styles.input, {height: 110}]}
+            placeholder="Descrição do imóvel"
+            onBlur={onBlur}
+            onChangeText={(value) => onChange(value)}
+            value={value}
+            multiline
+          />
+        )}
+      />
+      {errors.description && (
+        <SmallAlertText>{errors.description?.message}</SmallAlertText>
+      )}
+
+      <Controller
+        control={control}
+        name="address"
+        defaultValue=""
+        rules={{
+          required: 'Digite o endereço do imóvel!',
+        }}
+        render={({onChange, onBlur, value}) => (
+          <TextInput
+            style={styles.input}
+            placeholder="Endereço"
+            onBlur={onBlur}
+            onChangeText={(value) => onChange(value)}
+            value={value}
+          />
+        )}
+      />
+      {errors.address && (
+        <SmallAlertText>{errors.address?.message}</SmallAlertText>
+      )}
+
+      <Controller
+        control={control}
+        name="sale_price"
+        defaultValue=""
+        rules={{
+          required: 'O valor de venda é obrigatório!',
+        }}
+        render={({onChange, onBlur, value}) => (
+          <TextInput
+            style={styles.input}
+            placeholder="Preço"
+            onBlur={onBlur}
+            onChangeText={(value) => onChange(value)}
+            value={value}
+          />
+        )}
+      />
+      {errors.price && <SmallAlertText>{errors.price?.message}</SmallAlertText>}
 
       <Text style={styles.label}>Fotos</Text>
 
@@ -139,7 +251,9 @@ export default function DataPropertieForm() {
         />
       </View>
 
-      <RectButton style={styles.nextButton} onPress={createPropertie}>
+      <RectButton
+        style={styles.nextButton}
+        onPress={handleSubmit(createPropertie)}>
         <Text style={styles.nextButtonText}>Cadastrar</Text>
       </RectButton>
     </ScrollView>
@@ -164,7 +278,7 @@ const styles = StyleSheet.create({
   label: {
     color: '#8fa7b3',
     fontFamily: 'Nunito_600SemiBold',
-    marginBottom: 8,
+    marginTop: 8,
   },
 
   comment: {
@@ -180,7 +294,7 @@ const styles = StyleSheet.create({
     height: 54,
     paddingVertical: 18,
     paddingHorizontal: 24,
-    marginBottom: 16,
+    marginTop: 16,
     textAlignVertical: 'top',
   },
 
