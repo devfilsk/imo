@@ -16,6 +16,7 @@ import {Container, MenuIten, MenuItenText} from './styles';
 import {useAuth} from '~/contexts/auth';
 
 import UserNotAuthenticatedBox from '~/pages/User/UserNotAuthenticatedBox';
+import Dashboard from '~/pages/Dashboard';
 
 const UserMenu: React.FC = () => {
   const navigation = useNavigation();

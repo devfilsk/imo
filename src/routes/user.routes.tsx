@@ -27,14 +27,7 @@ const UserRoutes: React.FC = () => {
           fontWeight: 'bold',
         },
       }}>
-      <PropertieStack.Screen
-        name="UserMenu"
-        component={UserMenu}
-        // options={{
-        //   headerShown: true,
-        //   header: () => <Header title="Acessar sua conta" showBack={false} />,
-        // }}
-      />
+      <PropertieStack.Screen name="UserMenu" component={UserMenu} />
       <PropertieStack.Screen
         name="SignIn"
         component={SignIn}

@@ -50,10 +50,13 @@ export default function DataPropertieForm() {
       multiple: true,
     })
       .then((images) => {
+        let array = [];
         images.map((image) => {
-          console.log('--->', image);
-          setImages([...images, image.path]);
+          array = [...array, image.path];
         });
+        console.log('---=>', array);
+
+        setImages([...images, array]);
         // setImages([...images, image.path]);
       })
       .catch((e) => {

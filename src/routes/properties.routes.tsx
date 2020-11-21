@@ -30,6 +30,14 @@ const PropertiesRoutes: React.FC = () => {
         },
       }}>
       <PropertieStack.Screen
+        name="SelectMapPosition"
+        component={SelectMapPosition}
+        options={{
+          headerShown: true,
+          header: () => <Header title="Localização do Imóvel" />,
+        }}
+      />
+      <PropertieStack.Screen
         name="PropertiesFavoriteds"
         component={PropertiesFavoriteds}
         options={{
@@ -59,14 +67,7 @@ const PropertiesRoutes: React.FC = () => {
           header: () => <Header title="Cadastrar Imóvel" />,
         }}
       />
-      <PropertieStack.Screen
-        name="SelectMapPosition"
-        component={SelectMapPosition}
-        options={{
-          headerShown: true,
-          header: () => <Header title="Localização do Imóvel" />,
-        }}
-      />
+
       <PropertieStack.Screen
         name="DataPropertieForm"
         component={DataPropertieForm}
