@@ -3,6 +3,7 @@ import Icon from 'react-native-vector-icons/AntDesign';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 import Dashboard from '~/pages/Dashboard';
+import Favorites from '~/pages/Propertie/Favorites';
 import PropertiesRoutes from './properties.routes';
 import UserRoutes from './user.routes';
 import SignUp from '~/pages/Auth/SignUp';
@@ -31,8 +32,8 @@ function HomeRoutes() {
       />
 
       <AppBottomNav.Screen
-        name="PropertiesRoutes"
-        component={PropertiesRoutes}
+        name="Favorites"
+        component={Favorites}
         options={{
           tabBarLabel: 'Favoritos',
           tabBarIcon: ({color}) => (

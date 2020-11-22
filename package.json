@@ -19,6 +19,7 @@
     "@types/react-native-vector-icons": "^6.4.5",
     "axios": "^0.21.0",
     "form-data": "^3.0.0",
+    "number-to-locale-string-polyfill": "^1.0.9",
     "react": "16.11.0",
     "react-hook-form": "^6.9.6",
     "react-native": "0.62.2",

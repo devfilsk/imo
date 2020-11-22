@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import ImagePicker from 'react-native-image-crop-picker';
 import GallerySwiper from 'react-native-gallery-swiper';
 import {useForm, Controller} from 'react-hook-form';
-import {useNavigation, useRoute} from '@react-navigation/native';
+import {useNavigation, useRoute, StackActions} from '@react-navigation/native';
 
 import {
   UploadedImagesContainer,
@@ -22,9 +22,13 @@ import Feather from 'react-native-vector-icons/Feather';
 import {RectButton} from 'react-native-gesture-handler';
 import api from '~/services/api';
 
+import {useApp} from '~/contexts/app';
+
 export default function DataPropertieForm() {
   const route = useRoute();
   const navigation = useNavigation();
+
+  const {currencyFromat} = useApp();
 
   const {position} = route.params;
 
@@ -40,6 +44,9 @@ export default function DataPropertieForm() {
   const [galery, setGalery] = useState(false);
   const [imagesGalery, setImagesGalery] = useState([]);
 
+  const [sent, setSent] = useState(false);
+  const [sale, setSale] = useState(false);
+
   const [images, setImages] = useState<string[]>([]);
 
   function selectPhotoFromGalery() {
@@ -49,15 +56,13 @@ export default function DataPropertieForm() {
       // cropping: true,
       multiple: true,
     })
-      .then((images) => {
+      .then((img) => {
         let array = [];
-        images.map((image) => {
+        img.map((image) => {
           array = [...array, image.path];
         });
-        console.log('---=>', array);
 
-        setImages([...images, array]);
-        // setImages([...images, image.path]);
+        setImages([...images, ...array]);
       })
       .catch((e) => {
         console.log(e);
@@ -99,6 +104,7 @@ export default function DataPropertieForm() {
         if (res.status === 201) {
           await api.post(`properties/${res.data.id}/images`, formData);
 
+          navigation.dispatch(StackActions.popToTop());
           navigation.navigate('DetailsPropertie', {id: res.data.id});
         }
       })
@@ -196,8 +202,12 @@ export default function DataPropertieForm() {
           <TextInput
             style={styles.input}
             placeholder="Preço"
+            keyboardType="numeric"
             onBlur={onBlur}
-            onChangeText={(value) => onChange(value)}
+            onChangeText={(value) => {
+              console.log(currencyFromat(value));
+              return onChange(currencyFromat(value));
+            }}
             value={value}
           />
         )}
@@ -241,26 +251,82 @@ export default function DataPropertieForm() {
       <Text style={styles.title}>Disponível para</Text>
 
       <View style={styles.switchContainer}>
-        <Text style={styles.label}>Alugar</Text>
-        <Switch
+        <Text style={styles.label}>Valor de venda: </Text>
+        {/* <Switch
           thumbColor="#fff"
           trackColor={{false: '#ccc', true: '#39CC83'}}
+          value={sale}
+          onValueChange={(value) => setSale(value)}
+        /> */}
+        <Controller
+          control={control}
+          name="sale_price"
+          defaultValue=""
+          rules={{
+            required: 'O valor de venda é obrigatório!',
+          }}
+          render={({onChange, onBlur, value}) => (
+            <TextInput
+              style={{...styles.input, width: '50%'}}
+              placeholder="R$ 0,00"
+              keyboardType="numeric"
+              onBlur={onBlur}
+              onChangeText={(value) => {
+                console.log(currencyFromat(value));
+                return onChange(currencyFromat(value));
+              }}
+              value={value}
+              // underlineColorAndroid="transparent"
+              // editable={false}
+            />
+          )}
         />
+        {errors.price && (
+          <SmallAlertText>{errors.price?.message}</SmallAlertText>
+        )}
       </View>
       <View style={styles.switchContainer}>
-        <Text style={styles.label}>Venda</Text>
-        <Switch
+        <Text style={styles.label}>Valor do aluguel:</Text>
+        {/* <Switch
           thumbColor="#fff"
           trackColor={{false: '#ccc', true: '#39CC83'}}
+          value={sent}
+          onValueChange={(value) => setSent(value)}
+        /> */}
+        <Controller
+          control={control}
+          name="sale_price"
+          defaultValue=""
+          rules={{
+            required: 'O valor de venda é obrigatório!',
+          }}
+          render={({onChange, onBlur, value}) => (
+            <TextInput
+              style={{...styles.input, width: '50%'}}
+              placeholder="R$ 0,00"
+              keyboardType="numeric"
+              onBlur={onBlur}
+              onChangeText={(value) => {
+                console.log(currencyFromat(value));
+                return onChange(currencyFromat(value));
+              }}
+              value={value}
+              // underlineColorAndroid="transparent"
+              // editable={false}
+            />
+          )}
         />
+        {errors.price && (
+          <SmallAlertText>{errors.price?.message}</SmallAlertText>
+        )}
       </View>
-      <View style={styles.switchContainer}>
+      {/* <View style={styles.switchContainer}>
         <Text style={styles.label}>Temporada</Text>
         <Switch
           thumbColor="#fff"
           trackColor={{false: '#ccc', true: '#39CC83'}}
         />
-      </View>
+      </View> */}
 
       <RectButton
         style={styles.nextButton}

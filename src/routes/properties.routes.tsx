@@ -4,6 +4,7 @@ import {createStackNavigator} from '@react-navigation/stack';
 import MainProperties from '~/pages/Propertie/Main';
 import Header from '~/pages/components/Header';
 import NewPropertie from '~/pages/Propertie/NewPropertie';
+import MyProperties from '~/pages/Propertie/MyProperties';
 import PicturePropertie from '~/pages/Propertie/PicturePropertie';
 import DetailsPropertie from '~/pages/Propertie/DetailsPropertie';
 import SelectMapPosition from '~/pages/Propertie/NewPropertie/SelectMapPosition';
@@ -43,6 +44,14 @@ const PropertiesRoutes: React.FC = () => {
         options={{
           headerShown: true,
           header: () => <Header title="Imóveis curtidos" />,
+        }}
+      />
+      <PropertieStack.Screen
+        name="MyProperties"
+        component={MyProperties}
+        options={{
+          headerShown: true,
+          header: () => <Header title="Meus Imóveis" />,
         }}
       />
       <PropertieStack.Screen name="MainProperties" component={MainProperties} />

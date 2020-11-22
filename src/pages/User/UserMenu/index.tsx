@@ -25,6 +25,10 @@ const UserMenu: React.FC = () => {
   function handleNavigationCreatePropertie() {
     navigation.navigate('PropertiesRoutes', {screen: 'SelectMapPosition'});
   }
+
+  function handleNavigationMyProperties() {
+    navigation.navigate('PropertiesRoutes', {screen: 'MyProperties'});
+  }
   if (!signed) {
     return (
       <Container>
@@ -38,7 +42,7 @@ const UserMenu: React.FC = () => {
     <Container>
       <Title>Seu Perfil</Title>
 
-      <MenuIten onPress={() => {}}>
+      <MenuIten onPress={handleNavigationMyProperties}>
         <MenuItenText>Seus imóveis </MenuItenText>
         <AntDesign name="home" size={24} />
       </MenuIten>

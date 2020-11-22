@@ -12,6 +12,7 @@ interface AppContextData {
   currentPosition: PositionData | null;
   customerPosition: PositionData | null;
   handleSetCustomerPosition(position: PositionData | null): void;
+  currencyFromat(value: string): string;
 }
 
 interface PositionData {
@@ -110,6 +111,25 @@ export const AppProvider: React.FC = ({children}) => {
     setCustomerPosition(position);
   }
 
+  function currencyFromat(value: string) {
+    if (!value) return '';
+    // let formatted = n.toLocaleString('en-GB', {
+    //   style: 'currency',
+    //   currency: 'GBP',
+    // });
+    // console.log('formatted', formatted);
+    console.log('VALOR 1', value);
+    let parse = parseFloat(value);
+    console.log('VALOR 2', parse);
+
+    return parseFloat(value).toLocaleString('pt-br', {
+      minimumFractionDigits: 2,
+      // style: 'currency',
+    });
+    // console.log('---**', f);
+    // return value.toLocaleString('pt-br', {minimumFractionDigits: 2});
+  }
+
   return (
     <AppContext.Provider
       value={{
@@ -119,6 +139,7 @@ export const AppProvider: React.FC = ({children}) => {
         currentPosition,
         customerPosition,
         handleSetCustomerPosition,
+        currencyFromat,
       }}>
       {children}
     </AppContext.Provider>
