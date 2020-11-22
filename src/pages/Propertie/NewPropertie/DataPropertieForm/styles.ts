@@ -1,6 +1,6 @@
 import styled from 'styled-components/native';
 
-export const UploadedImagesContainer = styled.View`
+export const UploadedImagesContainer = styled.ScrollView`
   flex-direction: row;
 `;
 

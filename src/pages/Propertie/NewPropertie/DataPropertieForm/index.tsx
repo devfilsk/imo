@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import ImagePicker from 'react-native-image-crop-picker';
 import GallerySwiper from 'react-native-gallery-swiper';
-import {useForm, Controller} from 'react-hook-form';
+import {useForm, Controller, ErrorMessage} from 'react-hook-form';
 import {useNavigation, useRoute, StackActions} from '@react-navigation/native';
 
 import {
@@ -37,15 +37,13 @@ export default function DataPropertieForm() {
       title: '',
       description: '',
       address: '',
-      price: '',
+      sale_price: '',
+      sent_price: '',
     },
   });
 
   const [galery, setGalery] = useState(false);
   const [imagesGalery, setImagesGalery] = useState([]);
-
-  const [sent, setSent] = useState(false);
-  const [sale, setSale] = useState(false);
 
   const [images, setImages] = useState<string[]>([]);
 
@@ -191,73 +189,14 @@ export default function DataPropertieForm() {
         <SmallAlertText>{errors.address?.message}</SmallAlertText>
       )}
 
-      <Controller
-        control={control}
-        name="sale_price"
-        defaultValue=""
-        rules={{
-          required: 'O valor de venda é obrigatório!',
-        }}
-        render={({onChange, onBlur, value}) => (
-          <TextInput
-            style={styles.input}
-            placeholder="Preço"
-            keyboardType="numeric"
-            onBlur={onBlur}
-            onChangeText={(value) => {
-              console.log(currencyFromat(value));
-              return onChange(currencyFromat(value));
-            }}
-            value={value}
-          />
-        )}
-      />
-      {errors.price && <SmallAlertText>{errors.price?.message}</SmallAlertText>}
-
-      <Text style={styles.label}>Fotos</Text>
-
-      {galery && (
-        <GallerySwiper
-          images={imagesGalery}
-          initialNumToRender={images.length}
-          immediate={true}
-          initialPage={0}
-          style={{background: '#FFF'}}
-          // Version *1.15.0 update
-          // onEndReached={() => {
-          //     // add more images when scroll reaches end
-          // }}
-        />
-      )}
-
-      {/* <Galery isOpen={galery} toggle images index={0} /> */}
-
-      <UploadedImagesContainer>
-        {images.map((image) => {
-          return (
-            <TouchableOpacity onPress={prepareImagesGalery}>
-              <UploadedImages key={image} source={{uri: image}} />
-            </TouchableOpacity>
-          );
-        })}
-      </UploadedImagesContainer>
-
-      <TouchableOpacity
-        style={styles.imagesInput}
-        onPress={selectPhotoFromGalery}>
-        <Feather name="plus" size={24} color="#15B6D6" />
-      </TouchableOpacity>
-
-      <Text style={styles.title}>Disponível para</Text>
-
       <View style={styles.switchContainer}>
         <Text style={styles.label}>Valor de venda: </Text>
         {/* <Switch
-          thumbColor="#fff"
-          trackColor={{false: '#ccc', true: '#39CC83'}}
-          value={sale}
-          onValueChange={(value) => setSale(value)}
-        /> */}
+    thumbColor="#fff"
+    trackColor={{false: '#ccc', true: '#39CC83'}}
+    value={sale}
+    onValueChange={(value) => setSale(value)}
+  /> */}
         <Controller
           control={control}
           name="sale_price"
@@ -288,11 +227,11 @@ export default function DataPropertieForm() {
       <View style={styles.switchContainer}>
         <Text style={styles.label}>Valor do aluguel:</Text>
         {/* <Switch
-          thumbColor="#fff"
-          trackColor={{false: '#ccc', true: '#39CC83'}}
-          value={sent}
-          onValueChange={(value) => setSent(value)}
-        /> */}
+    thumbColor="#fff"
+    trackColor={{false: '#ccc', true: '#39CC83'}}
+    value={sent}
+    onValueChange={(value) => setSent(value)}
+  /> */}
         <Controller
           control={control}
           name="sale_price"
@@ -320,6 +259,42 @@ export default function DataPropertieForm() {
           <SmallAlertText>{errors.price?.message}</SmallAlertText>
         )}
       </View>
+      <Text style={styles.separator}></Text>
+
+      <Text style={styles.label}>Fotos</Text>
+
+      {galery && (
+        <GallerySwiper
+          images={imagesGalery}
+          initialNumToRender={images.length}
+          immediate={true}
+          initialPage={0}
+          style={{background: '#FFF'}}
+          // Version *1.15.0 update
+          // onEndReached={() => {
+          //     // add more images when scroll reaches end
+          // }}
+        />
+      )}
+
+      {/* <Galery isOpen={galery} toggle images index={0} /> */}
+
+      <UploadedImagesContainer horizontal>
+        {images.map((image) => {
+          return (
+            <TouchableOpacity onPress={prepareImagesGalery}>
+              <UploadedImages key={image} source={{uri: image}} />
+            </TouchableOpacity>
+          );
+        })}
+      </UploadedImagesContainer>
+
+      <TouchableOpacity
+        style={styles.imagesInput}
+        onPress={selectPhotoFromGalery}>
+        <Feather name="plus" size={24} color="#15B6D6" />
+      </TouchableOpacity>
+
       {/* <View style={styles.switchContainer}>
         <Text style={styles.label}>Temporada</Text>
         <Switch
@@ -352,10 +327,18 @@ const styles = StyleSheet.create({
     borderBottomColor: '#D3E2E6',
   },
 
+  separator: {
+    marginBottom: 24,
+    paddingBottom: 24,
+    borderBottomWidth: 0.8,
+    borderBottomColor: '#D3E2E6',
+  },
+
   label: {
     color: '#8fa7b3',
     fontFamily: 'Nunito_600SemiBold',
     marginTop: 8,
+    // marginBottom: 8,
   },
 
   comment: {

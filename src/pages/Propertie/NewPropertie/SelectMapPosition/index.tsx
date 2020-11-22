@@ -21,10 +21,10 @@ export default function SelectMapPosition() {
 
   const navigation = useNavigation();
 
-  useEffect(() => {
-    console.log('---->', customerPosition);
-    setPosition(customerPosition);
-  }, [customerPosition]);
+  // useEffect(() => {
+  //   console.log('---->', customerPosition);
+  //   // setPosition(customerPosition);
+  // }, [customerPosition]);
   function handleNextStep() {
     navigation.navigate('DataPropertieForm', {position});
   }
@@ -53,7 +53,7 @@ export default function SelectMapPosition() {
     <View style={styles.container}>
       <MapView
         initialRegion={{
-          ...position,
+          ...currentPosition,
           latitudeDelta: 0.008,
           longitudeDelta: 0.008,
         }}

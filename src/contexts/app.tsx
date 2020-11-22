@@ -16,8 +16,8 @@ interface AppContextData {
 }
 
 interface PositionData {
-  latitude: number | null;
-  longitude: number | null;
+  latitude: number | 0;
+  longitude: number | 0;
   latitudeDelta: number | null;
   longitudeDelta: number | null;
 }
@@ -39,12 +39,8 @@ const AppContext = createContext<AppContextData>({} as AppContextData);
 export const AppProvider: React.FC = ({children}) => {
   const [propertie, setPropertie] = useState<PropertieData | null>(null);
   const [properties, setProperties] = useState<[] | null>([]);
-  const [currentPosition, setCurrentPosition] = useState<PositionData | null>(
-    null,
-  );
-  const [customerPosition, setCustomerPosition] = useState<PositionData | null>(
-    null,
-  );
+  const [currentPosition, setCurrentPosition] = useState<PositionData>();
+  const [customerPosition, setCustomerPosition] = useState<PositionData>();
 
   // Pega a posição atual
   useEffect(() => {
