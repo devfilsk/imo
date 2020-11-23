@@ -108,6 +108,10 @@ export const AppProvider: React.FC = ({children}) => {
   }
 
   function currencyFromat(value: string) {
+    console.log('CURR', value);
+    value = value.replace('R$', '');
+    value = value.replace('.', '');
+    value = value.replace(',', '.');
     if (!value) return '';
     // let formatted = n.toLocaleString('en-GB', {
     //   style: 'currency',
@@ -118,9 +122,11 @@ export const AppProvider: React.FC = ({children}) => {
     let parse = parseFloat(value);
     console.log('VALOR 2', parse);
 
-    return parseFloat(value).toLocaleString('pt-br', {
+    return parseFloat(value).toLocaleString('pt-BR', {
       minimumFractionDigits: 2,
       // style: 'currency',
+      // style: 'currency',
+      // currency: 'BRL',
     });
     // console.log('---**', f);
     // return value.toLocaleString('pt-br', {minimumFractionDigits: 2});

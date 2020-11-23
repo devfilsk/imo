@@ -3,7 +3,7 @@ import ImagePicker from 'react-native-image-crop-picker';
 import GallerySwiper from 'react-native-gallery-swiper';
 import {useForm, Controller, ErrorMessage} from 'react-hook-form';
 import {useNavigation, useRoute, StackActions} from '@react-navigation/native';
-
+import LoadingScreen from '~/pages/Propertie/NewPropertie/LoadingScreen';
 import {
   UploadedImagesContainer,
   UploadedImages,
@@ -42,8 +42,16 @@ export default function DataPropertieForm() {
     },
   });
 
+  const [loadingMessage, setLoadingMessage] = useState(
+    'Salvando suas informações...',
+  );
+  const [loading, setLoading] = useState(false);
+
   const [galery, setGalery] = useState(false);
   const [imagesGalery, setImagesGalery] = useState([]);
+
+  const [sale, setSale] = useState(false);
+  const [sent, setSent] = useState(false);
 
   const [images, setImages] = useState<string[]>([]);
 
@@ -91,6 +99,8 @@ export default function DataPropertieForm() {
     });
 
     // const response = await api.post('properties', {title: 'titulo'});
+    setLoadingMessage('Salvando suas informações...');
+    setLoading(true);
     const response = await api
       .post('properties', {
         ...data,
@@ -100,16 +110,25 @@ export default function DataPropertieForm() {
       .then((res) => res)
       .then(async (res: any) => {
         if (res.status === 201) {
+          setLoadingMessage('Fazendo upload das imagens...');
           await api.post(`properties/${res.data.id}/images`, formData);
-
+          setLoading(false);
           navigation.dispatch(StackActions.popToTop());
           navigation.navigate('DetailsPropertie', {id: res.data.id});
         }
       })
       .catch((e) => {
+        setLoading(false);
         console.log('=====>', e);
       });
     console.log('---------->', response);
+    setLoading(false);
+  }
+
+  console.log('****>', errors);
+
+  if (loading) {
+    return <LoadingScreen message={loadingMessage} />;
   }
 
   return (
@@ -188,78 +207,102 @@ export default function DataPropertieForm() {
       {errors.address && (
         <SmallAlertText>{errors.address?.message}</SmallAlertText>
       )}
+      <Text style={styles.separator}></Text>
+      <View style={styles.switchContainer}>
+        <Text style={styles.label}>Disponível para venda? </Text>
+        <Switch
+          thumbColor="#fff"
+          trackColor={{false: '#ccc', true: '#39CC83'}}
+          value={sale}
+          onValueChange={(value) => setSale(value)}
+        />
+      </View>
+      {sale && (
+        <View>
+          <View style={styles.switchContainer}>
+            <Text style={styles.label}>Valor de venda: </Text>
+
+            <Controller
+              control={control}
+              name="sale_price"
+              defaultValue=""
+              rules={{
+                required: sale ? 'O valor da venda é obrigatório' : false,
+              }}
+              render={({onChange, onBlur, value}) => (
+                <TextInput
+                  style={{...styles.input, width: '50%'}}
+                  placeholder="R$ 0,00"
+                  keyboardType="numeric"
+                  onBlur={onBlur}
+                  onChangeText={(value) => {
+                    console.log(currencyFromat(value));
+                    return onChange(currencyFromat(value));
+                  }}
+                  value={value}
+                  // underlineColorAndroid="transparent"
+                  // editable={false}
+                />
+              )}
+            />
+          </View>
+          {errors.sale_price && (
+            <SmallAlertText>{errors.sale_price?.message}</SmallAlertText>
+          )}
+        </View>
+      )}
+      <Text style={styles.separator}></Text>
 
       <View style={styles.switchContainer}>
-        <Text style={styles.label}>Valor de venda: </Text>
-        {/* <Switch
-    thumbColor="#fff"
-    trackColor={{false: '#ccc', true: '#39CC83'}}
-    value={sale}
-    onValueChange={(value) => setSale(value)}
-  /> */}
-        <Controller
-          control={control}
-          name="sale_price"
-          defaultValue=""
-          rules={{
-            required: 'O valor de venda é obrigatório!',
-          }}
-          render={({onChange, onBlur, value}) => (
-            <TextInput
-              style={{...styles.input, width: '50%'}}
-              placeholder="R$ 0,00"
-              keyboardType="numeric"
-              onBlur={onBlur}
-              onChangeText={(value) => {
-                console.log(currencyFromat(value));
-                return onChange(currencyFromat(value));
-              }}
-              value={value}
-              // underlineColorAndroid="transparent"
-              // editable={false}
-            />
-          )}
+        <Text style={styles.label}>Disponível para alugar:</Text>
+        <Switch
+          thumbColor="#fff"
+          trackColor={{false: '#ccc', true: '#39CC83'}}
+          value={sent}
+          onValueChange={(value) => setSent(value)}
         />
-        {errors.price && (
-          <SmallAlertText>{errors.price?.message}</SmallAlertText>
-        )}
       </View>
-      <View style={styles.switchContainer}>
-        <Text style={styles.label}>Valor do aluguel:</Text>
-        {/* <Switch
-    thumbColor="#fff"
-    trackColor={{false: '#ccc', true: '#39CC83'}}
-    value={sent}
-    onValueChange={(value) => setSent(value)}
-  /> */}
-        <Controller
-          control={control}
-          name="sale_price"
-          defaultValue=""
-          rules={{
-            required: 'O valor de venda é obrigatório!',
-          }}
-          render={({onChange, onBlur, value}) => (
-            <TextInput
-              style={{...styles.input, width: '50%'}}
-              placeholder="R$ 0,00"
-              keyboardType="numeric"
-              onBlur={onBlur}
-              onChangeText={(value) => {
-                console.log(currencyFromat(value));
-                return onChange(currencyFromat(value));
+      {sent && (
+        <View>
+          <View style={styles.switchContainer}>
+            <Text style={styles.label}>Valor de venda: </Text>
+
+            <Controller
+              control={control}
+              name="sent_price"
+              defaultValue=""
+              rules={{
+                required: sent ? 'Qual o valor do valuguel?' : false,
               }}
-              value={value}
-              // underlineColorAndroid="transparent"
-              // editable={false}
+              render={({onChange, onBlur, value}) => (
+                <TextInput
+                  style={{...styles.input, width: '50%'}}
+                  placeholder="R$ 0,00"
+                  keyboardType="numeric"
+                  onBlur={onBlur}
+                  onChangeText={(value) => {
+                    console.log(currencyFromat(value));
+                    return onChange(currencyFromat(value));
+                  }}
+                  value={value}
+                  // underlineColorAndroid="transparent"
+                  // editable={false}
+                />
+              )}
             />
+          </View>
+          {errors.sent_price && (
+            <SmallAlertText>{errors.sent_price?.message}</SmallAlertText>
           )}
-        />
-        {errors.price && (
-          <SmallAlertText>{errors.price?.message}</SmallAlertText>
-        )}
-      </View>
+        </View>
+      )}
       <Text style={styles.separator}></Text>
+
+      {Object.keys(errors).length && !sale && !sent ? (
+        <SmallAlertText>Selecione uma das modalidades acima</SmallAlertText>
+      ) : (
+        <Text> </Text>
+      )}
 
       <Text style={styles.label}>Fotos</Text>
 
@@ -328,8 +371,8 @@ const styles = StyleSheet.create({
   },
 
   separator: {
-    marginBottom: 24,
-    paddingBottom: 24,
+    marginBottom: 15,
+    paddingBottom: 15,
     borderBottomWidth: 0.8,
     borderBottomColor: '#D3E2E6',
   },
