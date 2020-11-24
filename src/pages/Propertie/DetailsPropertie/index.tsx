@@ -7,10 +7,14 @@ import {
   StyleSheet,
   Dimensions,
   Linking,
+  TouchableWithoutFeedback,
 } from 'react-native';
+
+import {ActionsContainer, ContainerBlank} from './styles';
 import MapView, {Marker, LatLng} from 'react-native-maps';
 import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
+import AntDesign from 'react-native-vector-icons/AntDesign';
 
 import {useRoute} from '@react-navigation/native';
 
@@ -28,6 +32,7 @@ interface Propertie {
     id: number;
     url: string;
   }>;
+  favorite: Object;
 }
 
 interface PropertieDetailsRouteParams {
@@ -40,10 +45,17 @@ export default function DetailsPropertie() {
   const params = route.params as PropertieDetailsRouteParams;
 
   const [propertie, setPropertie] = useState<Propertie>();
+  const [favorited, setFavorited] = useState(false);
 
   useEffect(() => {
     getPropertie();
   }, [params.id]);
+
+  useEffect(() => {
+    if (propertie?.favorite) {
+      setFavorited(true);
+    }
+  }, [propertie]);
 
   if (!propertie) {
     return (
@@ -54,7 +66,7 @@ export default function DetailsPropertie() {
   }
 
   async function getPropertie() {
-    const response = await api.get(`properties/${params.id}`);
+    const response = await api.get(`properties/auth/${params.id}`);
     console.log(response.data);
     if (response.status === 200) {
       setPropertie(response.data);
@@ -79,6 +91,15 @@ export default function DetailsPropertie() {
     });
   }
 
+  async function toggleFavorite() {
+    if (!favorited) {
+      await api.post('favorite', {property_id: params.id});
+    } else {
+      await api.delete(`favorite/${params.id}`);
+    }
+    setFavorited(!favorited);
+  }
+
   return (
     <ScrollView style={styles.container}>
       <View style={styles.imagesContainer}>
@@ -91,13 +112,24 @@ export default function DetailsPropertie() {
                 source={{
                   uri: image.url,
                 }}
-                resizeMode="contain"
+                resizeMode="cover"
                 resizeMethod="resize"
               />
             );
           })}
         </ScrollView>
       </View>
+
+      <ActionsContainer>
+        <ContainerBlank />
+        <TouchableWithoutFeedback onPress={toggleFavorite}>
+          <AntDesign
+            name={favorited ? 'heart' : 'hearto'}
+            size={28}
+            color={favorited ? '#e02041' : '#e02041'}
+          />
+        </TouchableWithoutFeedback>
+      </ActionsContainer>
 
       <View style={styles.detailsContainer}>
         <Text style={styles.title}>{propertie?.title}</Text>
@@ -172,11 +204,12 @@ const styles = StyleSheet.create({
 
   imagesContainer: {
     height: 240,
+    width: '100%',
   },
 
   image: {
     width: Dimensions.get('window').width,
-    height: 240,
+    height: 260,
     resizeMode: 'contain',
   },
 

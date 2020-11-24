@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import ImagePicker from 'react-native-image-crop-picker';
 import GallerySwiper from 'react-native-gallery-swiper';
 import {useForm, Controller, ErrorMessage} from 'react-hook-form';
@@ -28,11 +28,13 @@ export default function DataPropertieForm() {
   const route = useRoute();
   const navigation = useNavigation();
 
+  const [property, setProperty] = useState({});
+
   const {currencyFromat} = useApp();
 
   const {position} = route.params;
 
-  const {control, handleSubmit, errors, watch} = useForm({
+  const {control, handleSubmit, errors, watch, setValue} = useForm({
     defaultValues: {
       title: '',
       description: '',
@@ -41,6 +43,23 @@ export default function DataPropertieForm() {
       sent_price: '',
     },
   });
+
+  useEffect(() => {
+    loadProperty();
+  }, [property]);
+
+  function loadProperty() {
+    // setValue('title', 'titulo');
+    // setValue('description', 'titulo');
+    // setValue('address', 'titulo');
+    // setValue([
+    //   {title: 'título'},
+    //   {description: 'Descrição'},
+    //   {address: 'add'},
+    //   {sale_price: ''},
+    //   {sent_price: ''},
+    // ]);
+  }
 
   const [loadingMessage, setLoadingMessage] = useState(
     'Salvando suas informações...',
