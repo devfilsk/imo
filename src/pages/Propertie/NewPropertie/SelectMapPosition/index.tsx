@@ -7,7 +7,7 @@ import MapView, {Marker, MapEvent} from 'react-native-maps';
 
 import {useApp} from '~/contexts/app';
 
-import mapMarkerImg from '~/assets/marker.png';
+import mapMarkerImg from '~/assets/mapsicons/marker.png';
 
 import Search from '~/components/Maps/Search';
 

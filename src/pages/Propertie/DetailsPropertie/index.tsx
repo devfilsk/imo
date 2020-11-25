@@ -18,7 +18,7 @@ import AntDesign from 'react-native-vector-icons/AntDesign';
 
 import {useRoute} from '@react-navigation/native';
 
-import mapMarkerImg from '~/assets/marker.png';
+import mapMarkerImg from '~/assets/mapsicons/marker.png';
 import {RectButton, TouchableOpacity} from 'react-native-gesture-handler';
 import api from '~/services/api';
 

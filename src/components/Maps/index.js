@@ -5,7 +5,7 @@ import {useApp} from '~/contexts/app';
 
 import MapView, {PROVIDER_GOOGLE, Marker} from 'react-native-maps';
 
-import markerImage from '~/assets/marker.png';
+import markerImage from '~/assets/mapsicons/marker.png';
 
 import {Container, AnnotationContainer, AnnotationText} from './styles';
 
@@ -47,6 +47,7 @@ export default function Maps({
             latitude: parseFloat(p.latitude),
             longitude: parseFloat(p.longitude),
           }}
+          style={{width: 30, height: 32}}
           anchor={{x: 0, y: 1}}
           image={markerImage}
           centerOffset={{x: -18, y: -60}}
