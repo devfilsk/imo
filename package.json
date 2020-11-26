@@ -29,7 +29,7 @@
     "react-native-geocoding": "^0.4.0",
     "react-native-geolocation-service": "^4.0.0",
     "react-native-gesture-handler": "^1.6.1",
-    "react-native-google-places-autocomplete": "^1.4.1",
+    "react-native-google-places-autocomplete": "^2.1.1",
     "react-native-image-crop-picker": "0.33.2",
     "react-native-maps": "^0.27.1",
     "react-native-paper": "^3.8.0",

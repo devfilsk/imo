@@ -34,7 +34,7 @@ export default function Maps({
       longitude,
     };
 
-    handleSetCustomerPosition(data);
+    handleSetCustomerPosition({...customerPosition, latitude, longitude});
   }
 
   function renderProperties() {
@@ -70,15 +70,15 @@ export default function Maps({
   }
 
   return (
-    <>
-      <MapView
-        provider={PROVIDER_GOOGLE}
-        style={{flex: 1, position: 'relative'}}
-        loadingEnabled
-        showsUserLocation
-        initialRegion={customerPosition ? customerPosition : currentPosition}
-        onRegionChangeComplete={handleSetCustomerPosition}>
-        {/* {customerPosition && (
+    <MapView
+      provider={PROVIDER_GOOGLE}
+      style={{flex: 1, position: 'relative'}}
+      loadingEnabled
+      showsUserLocation
+      region={customerPosition ? customerPosition : currentPosition}
+      // initialRegion={currentPosition}
+      onRegionChangeComplete={handleSetCustomerPosition}>
+      {/* {customerPosition && (
           <Marker
             coordinate={{
               latitude: customerPosition.latitude,
@@ -93,9 +93,7 @@ export default function Maps({
             centerOffset={{x: -18, y: -60}}></Marker>
         )} */}
 
-        {renderProperties()}
-      </MapView>
-      {/* { customerPosition && <ImageMarker source={markerImage}/> } */}
-    </>
+      {renderProperties()}
+    </MapView>
   );
 }

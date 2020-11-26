@@ -18,8 +18,8 @@ interface AppContextData {
 interface PositionData {
   latitude: number | 0;
   longitude: number | 0;
-  latitudeDelta: number | null;
-  longitudeDelta: number | null;
+  latitudeDelta: number | 0;
+  longitudeDelta: number | 0;
 }
 
 interface PropertieData {
@@ -39,8 +39,12 @@ const AppContext = createContext<AppContextData>({} as AppContextData);
 export const AppProvider: React.FC = ({children}) => {
   const [propertie, setPropertie] = useState<PropertieData | null>(null);
   const [properties, setProperties] = useState<[] | null>([]);
-  const [currentPosition, setCurrentPosition] = useState<PositionData>();
-  const [customerPosition, setCustomerPosition] = useState<PositionData>();
+  const [currentPosition, setCurrentPosition] = useState<PositionData | number>(
+    {latitude: 0, longitude: 0, latitudeDelta: 0, longitudeDelta: 0},
+  );
+  const [customerPosition, setCustomerPosition] = useState<
+    PositionData | number
+  >(0);
 
   // Pega a posição atual
   useEffect(() => {
@@ -74,6 +78,8 @@ export const AppProvider: React.FC = ({children}) => {
 
   // Pega todos os imóveis no raio da localização atual
   useEffect(() => {
+    console.log('CUSTOMER -> ', customerPosition);
+
     // cicle to get properties
     async function getPropertioes() {
       const response = await api.get(
