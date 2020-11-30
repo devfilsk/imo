@@ -47,7 +47,7 @@ const UserMenu: React.FC = () => {
       </Container>
     );
   }
-  console.log(user);
+
   return (
     <Container>
       <HeaderMenuContainer>

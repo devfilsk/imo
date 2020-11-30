@@ -8,6 +8,7 @@ import {TOKEN, USER} from '~/storage/constants';
 import api from '~/services/api';
 
 interface User {
+  id: number;
   name: string;
   email: string;
 }

@@ -47,13 +47,11 @@ export default function SelectMapPosition() {
     handleSetCustomerPosition(newPosition);
   }
 
-  console.log('=======>', customerPosition);
-
   return (
     <View style={styles.container}>
       <MapView
-        initialRegion={{
-          ...currentPosition,
+        region={{
+          ...customerPosition,
           latitudeDelta: 0.008,
           longitudeDelta: 0.008,
         }}

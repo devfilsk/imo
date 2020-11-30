@@ -3,6 +3,12 @@ import styled from 'styled-components/native';
 export const Container = styled.View`
   flex: 1;
   padding: 20px;
+  background: #fff;
+`;
+
+export const EmptyContainer = styled.View`
+  flex: 1;
+  flex-direction: column;
 `;
 
 export const Image = styled.Image`

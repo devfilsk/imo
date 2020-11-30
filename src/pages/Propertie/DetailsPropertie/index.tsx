@@ -16,6 +16,8 @@ import Feather from 'react-native-vector-icons/Feather';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import AntDesign from 'react-native-vector-icons/AntDesign';
 
+import {useAuth} from '~/contexts/auth';
+
 import {useRoute} from '@react-navigation/native';
 
 import mapMarkerImg from '~/assets/mapsicons/marker.png';
@@ -33,6 +35,7 @@ interface Propertie {
     url: string;
   }>;
   favorite: Object;
+  user_id: number;
 }
 
 interface PropertieDetailsRouteParams {
@@ -43,6 +46,8 @@ export default function DetailsPropertie() {
   const route = useRoute();
 
   const params = route.params as PropertieDetailsRouteParams;
+
+  const {user} = useAuth();
 
   const [propertie, setPropertie] = useState<Propertie>();
   const [favorited, setFavorited] = useState(false);
@@ -122,13 +127,17 @@ export default function DetailsPropertie() {
 
       <ActionsContainer>
         <ContainerBlank />
-        <TouchableWithoutFeedback onPress={toggleFavorite}>
-          <AntDesign
-            name={favorited ? 'heart' : 'hearto'}
-            size={28}
-            color={favorited ? '#e02041' : '#e02041'}
-          />
-        </TouchableWithoutFeedback>
+        {user?.id !== propertie.user_id ? (
+          <TouchableWithoutFeedback onPress={toggleFavorite}>
+            <AntDesign
+              name={favorited ? 'heart' : 'hearto'}
+              size={28}
+              color={favorited ? '#e02041' : '#e02041'}
+            />
+          </TouchableWithoutFeedback>
+        ) : (
+          <ContainerBlank />
+        )}
       </ActionsContainer>
 
       <View style={styles.detailsContainer}>

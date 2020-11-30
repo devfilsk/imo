@@ -62,7 +62,7 @@ const MyProperties: React.FC = () => {
             <Image
               key={property.id}
               source={{
-                uri: property.images[0].url,
+                uri: property.images.length ? property.images[0].url : '',
               }}
               resizeMode="contain"
               resizeMethod="resize"

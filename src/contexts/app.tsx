@@ -13,6 +13,7 @@ interface AppContextData {
   customerPosition: PositionData | null;
   handleSetCustomerPosition(position: PositionData | null): void;
   currencyFromat(value: string): string;
+  getPropertioes(): null;
 }
 
 interface PositionData {
@@ -44,7 +45,7 @@ export const AppProvider: React.FC = ({children}) => {
   );
   const [customerPosition, setCustomerPosition] = useState<
     PositionData | number
-  >(0);
+  >({latitude: 0, longitude: 0, latitudeDelta: 0, longitudeDelta: 0});
 
   // Pega a posição atual
   useEffect(() => {
@@ -53,12 +54,12 @@ export const AppProvider: React.FC = ({children}) => {
         ({coords: {latitude, longitude}}) => {
           // success
 
-          setCurrentPosition({
+          setCustomerPosition({
             // get location
             latitude,
             longitude,
-            latitudeDelta: 0.0143,
-            longitudeDelta: 0.0134,
+            latitudeDelta: 0.03864195044303443,
+            longitudeDelta: 0.030142817690068,
           });
         },
         (error) => {
@@ -78,22 +79,21 @@ export const AppProvider: React.FC = ({children}) => {
 
   // Pega todos os imóveis no raio da localização atual
   useEffect(() => {
-    console.log('CUSTOMER -> ', customerPosition);
-
-    // cicle to get properties
-    async function getPropertioes() {
-      const response = await api.get(
-        `properties?latitude=${customerPosition?.latitude}&longitude=${customerPosition?.longitude}`,
-      );
-      if (response.status === 200) {
-        setProperties(response.data);
-      } else {
-        Alert.alert('Não foi possível carregar as propriedades no mapa');
-      }
-    }
-
     getPropertioes();
   }, [customerPosition]); // Só é chamado quando o curentPosition é alterado
+
+  // cicle to get properties
+  async function getPropertioes() {
+    const response = await api.get(
+      `properties?latitude=${customerPosition?.latitude}&longitude=${customerPosition?.longitude}`,
+    );
+    if (response.status === 200) {
+      setProperties(response.data);
+    } else {
+      console.log('TES ======> ', response.data);
+      Alert.alert('Não foi possível carregar as propriedades no mapa');
+    }
+  }
 
   function handleSetPropertie(event: any | null) {
     if (event) {
@@ -148,6 +148,7 @@ export const AppProvider: React.FC = ({children}) => {
         customerPosition,
         handleSetCustomerPosition,
         currencyFromat,
+        getPropertioes,
       }}>
       {children}
     </AppContext.Provider>
